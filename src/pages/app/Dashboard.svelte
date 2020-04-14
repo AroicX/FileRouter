@@ -1,0 +1,124 @@
+<script>
+    
+</script>
+
+<svelte:head>
+  <title>Dashboard</title>
+</svelte:head>
+
+
+
+<main >
+
+    <div class="slim-mainpanel">
+        <div class="container">
+            <div class="slim-pageheader">
+                <ol class="breadcrumb slim-breadcrumb">
+                    <li class="breadcrumb-item"><a href={null}>Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+                </ol>
+                <h6 class="slim-pagetitle">Welcome back, Katherine</h6>
+            </div><!-- slim-pageheader -->
+
+            <div class="row row-xs">
+                <div class="col-sm-6 col-lg-3">
+                    <div class="card card-status">
+                        <div class="media">
+
+                            <div class="media-body">
+                                <h1>₦ 0.00</h1>
+                                <p>Total Fees</p>
+                            </div><!-- media-body -->
+                        </div><!-- media -->
+                    </div><!-- card -->
+                </div><!-- col-3 -->
+                <div class="col-sm-6 col-lg-3 mg-t-10 mg-sm-t-0">
+                    <div class="card card-status">
+                        <div class="media">
+
+                            <div class="media-body">
+                                <h1>₦ 0.00</h1>
+                                <p>Paid Fees</p>
+                            </div><!-- media-body -->
+                        </div><!-- media -->
+                    </div><!-- card -->
+                </div><!-- col-3 -->
+                <div class="col-sm-6 col-lg-3 mg-t-10 mg-lg-t-0">
+                    <div class="card card-status">
+                        <div class="media">
+
+                            <div class="media-body">
+                                <h1>₦ 0.00 </h1>
+                                <p>Owed Fees</p>
+                            </div><!-- media-body -->
+                        </div><!-- media -->
+                    </div><!-- card -->
+                </div><!-- col-3 -->
+                <div class="col-sm-6 col-lg-3 mg-t-10 mg-lg-t-0">
+                    <div class="card card-status">
+                        <div class="media">
+
+                            <div class="media-body">
+                                <h1>₦ 0.00 </h1>
+                                <p>Total Number of Students</p>
+                            </div><!-- media-body -->
+                        </div><!-- media -->
+                    </div><!-- card -->
+                </div><!-- col-3 -->
+            </div><!-- row -->
+
+            <div class="row row-xs py-5">
+                <div class="col-sm-6 col-lg-3">
+                    <div class="card card-status">
+                        <div class="media">
+
+                            <div class="media-body">
+                                <h1>₦ 0.00</h1>
+                                <p>Total Fees</p>
+                            </div><!-- media-body -->
+                        </div><!-- media -->
+                    </div><!-- card -->
+                </div><!-- col-3 -->
+                <div class="col-sm-6 col-lg-3 mg-t-10 mg-sm-t-0">
+                    <div class="card card-status">
+                        <div class="media">
+
+                            <div class="media-body">
+                                <h1>₦ 0.00</h1>
+                                <p>Paid Fees</p>
+                            </div><!-- media-body -->
+                        </div><!-- media -->
+                    </div><!-- card -->
+                </div><!-- col-3 -->
+                <div class="col-sm-6 col-lg-3 mg-t-10 mg-lg-t-0">
+                    <div class="card card-status">
+                        <div class="media">
+
+                            <div class="media-body">
+                                <h1>₦ 0.00 </h1>
+                                <p>Owed Fees</p>
+                            </div><!-- media-body -->
+                        </div><!-- media -->
+                    </div><!-- card -->
+                </div><!-- col-3 -->
+                <div class="col-sm-6 col-lg-3 mg-t-10 mg-lg-t-0">
+                    <div class="card card-status">
+                        <div class="media">
+
+                            <div class="media-body">
+                                <h1>₦ 0.00 </h1>
+                                <p>Total Number of Students</p>
+                            </div><!-- media-body -->
+                        </div><!-- media -->
+                    </div><!-- card -->
+                </div><!-- col-3 -->
+            </div><!-- row -->
+
+
+        </div><!-- container -->
+    </div><!-- slim-mainpanel -->
+
+
+
+
+</main>
