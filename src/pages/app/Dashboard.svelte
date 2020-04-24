@@ -1,14 +1,49 @@
 <script>
-    
+    import {
+        onMount
+    } from "svelte";
+    import {
+        DASHBOARD
+    } from "../../utilis/actions.js";
+    import Loader from "../../components/Loader.svelte";
+
+
+    let dashboard = [];
+    let isLoading = null;
+
+
+
+
+
+    onMount(() => {
+        getDashboard();
+    })
+
+    function getDashboard() {
+        isLoading = true;
+        const ls = JSON.parse(localStorage.getItem("currentUser"));
+
+        const callback = res => {
+            isLoading = false;
+            dashboard = res.data[0];
+        }
+
+        const onError = err => {
+            console.error(err);
+        }
+
+        DASHBOARD(ls.token, callback, onError);
+    }
 </script>
 
 <svelte:head>
-  <title>Dashboard</title>
+    <title>Dashboard</title>
 </svelte:head>
 
 
 
-<main >
+<main>
+    <Loader status={isLoading} />
 
     <div class="slim-mainpanel">
         <div class="container">
@@ -26,7 +61,7 @@
                         <div class="media">
 
                             <div class="media-body">
-                                <h1>₦ 0.00</h1>
+                                <h1>₦ {dashboard.total_fees}</h1>
                                 <p>Total Fees</p>
                             </div><!-- media-body -->
                         </div><!-- media -->

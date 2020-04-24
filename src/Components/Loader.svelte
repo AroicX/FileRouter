@@ -6,49 +6,14 @@
 
        setTimeout(() => {
            status = !status
-       },5000)
+       },8000)
     }
 </script>
 
 
-
 <div class={status ? 'loader' : 'none'}>
 
-<style>
-    @keyframes loader-animation {
-        0% {
-            left: -100%;
-        }
 
-        49% {
-            left: 100%;
-        }
-
-        50% {
-            left: 100%;
-        }
-
-        100% {
-            left: -100%;
-        }
-    }
-
-    .loader {
-        height: 5px;
-        width: 100%;
-    }
-
-    .loader .bar {
-        width: 100%;
-        position: absolute;
-        height: 5px;
-        background-color: dodgerblue;
-        animation-name: loader-animation;
-        animation-duration: 3s;
-        animation-iteration-count: infinite;
-        animation-timing-function: ease-in-out;
-    }
-</style>
 
     <div class="bar"></div>
 </div>

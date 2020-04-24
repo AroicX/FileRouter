@@ -3,8 +3,6 @@
         onMount
     } from "svelte";
 
-    import jQuery from "jquery";
-    import DataTable from "datatables.net";
 
  
 

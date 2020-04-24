@@ -39,6 +39,14 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
+"@handsontable/formulajs@^2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@handsontable/formulajs/-/formulajs-2.0.2.tgz#5be4b9226cc47811f646ae46b1b985230cd82995"
+  integrity sha512-maIyMJtYjA5e/R9nyA22Qd7Yw73MBSxClJvle0a8XWAS/5l6shc/OFpQqrmwMy4IXUCmywJ9ER0gOGz/YA720w==
+  dependencies:
+    bessel "^1.0.2"
+    jstat "^1.9.2"
+
 "@polka/url@^0.5.0":
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/@polka/url/-/url-0.5.0.tgz#b21510597fd601e5d7c95008b76bf0d254ebfd31"
@@ -58,6 +66,13 @@
   version "13.11.1"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-13.11.1.tgz#49a2a83df9d26daacead30d0ccc8762b128d53c7"
   integrity sha512-eWQGP3qtxwL8FGneRrC5DwrJLGN4/dH1clNTuLfN81HCrxVtxRjygDTUoZJ5ASlDEeo0ppYFQjQIlXhtXpOn6g==
+
+"@types/pikaday@1.7.4":
+  version "1.7.4"
+  resolved "https://registry.yarnpkg.com/@types/pikaday/-/pikaday-1.7.4.tgz#aa41f928f0f5af31a4a656f471a78177a9260abf"
+  integrity sha512-0KsHVyw5pTG829nqG4IRu7m+BFQlFEBdbE/1i3S5182HeKUKv1uEW0gyEmkJVp5i4IV+9pyh23O83+KpRkSQbw==
+  dependencies:
+    moment ">=2.14.0"
 
 "@types/resolve@0.0.8":
   version "0.0.8"
@@ -134,6 +149,13 @@ atob@^2.1.2:
   resolved "https://registry.yarnpkg.com/atob/-/atob-2.1.2.tgz#6d9517eb9e030d2436666651e86bd9f6f13533c9"
   integrity sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==
 
+axios@^0.19.2:
+  version "0.19.2"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-0.19.2.tgz#3ea36c5d8818d0d5f8a8a97a6d36b86cdc00cb27"
+  integrity sha512-fjgm5MvRHLhx+osE2xoekY70AhARk3a6hkN+3Io1jc00jtquGvxYlKlsFUhmUET0V5te6CcZI7lcv2Ym61mjHA==
+  dependencies:
+    follow-redirects "1.5.10"
+
 balanced-match@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.0.tgz#89b4d199ab2bee49de164ea02b89ce462d71b767"
@@ -151,6 +173,16 @@ base@^0.11.1:
     isobject "^3.0.1"
     mixin-deep "^1.2.0"
     pascalcase "^0.1.1"
+
+bessel@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/bessel/-/bessel-1.0.2.tgz#828812291e0b62e94959cdea43fac186e8a7202d"
+  integrity sha512-Al3nHGQGqDYqqinXhQzmwmcRToe/3WyBv4N8aZc5Pef8xw2neZlR9VPi84Sa23JtgWcucu18HxVZrnI0fn2etw==
+
+bignumber.js@^8.0.1:
+  version "8.1.1"
+  resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-8.1.1.tgz#4b072ae5aea9c20f6730e4e5d529df1271c4d885"
+  integrity sha512-QD46ppGintwPGuL1KqmwhR0O+N2cZUg8JG/VzwI2e28sM9TqHjQB10lI4QAaMHVbLzwVLLAwEglpKPViWX+5NQ==
 
 binary-extensions@^1.0.0:
   version "1.13.1"
@@ -323,6 +355,11 @@ copy-descriptor@^0.1.0:
   resolved "https://registry.yarnpkg.com/copy-descriptor/-/copy-descriptor-0.1.1.tgz#676f6eb3c39997c2ee1ac3a924fd6124748f578d"
   integrity sha1-Z29us8OZl8LuGsOpJP1hJHSPV40=
 
+core-js@^3.0.0:
+  version "3.6.5"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.6.5.tgz#7395dc273af37fb2e50e9bd3d9fe841285231d1a"
+  integrity sha512-vZVEEwZoIsI+vPEuoF9Iqf5H7/M3eeQqWlQnYa8FSKKePuYTf5MWnxb5SDAzCa60b3JBRS5g9b+Dq7b1y/RCrA==
+
 core-util-is@~1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/core-util-is/-/core-util-is-1.0.2.tgz#b5fd54220aa2bc5ab57aab7140c940754503c1a7"
@@ -353,6 +390,13 @@ datatables.net@1.10.20, datatables.net@^1.10.20:
   integrity sha512-4E4S7tTU607N3h0fZPkGmAtr9mwy462u+VJ6gxYZ8MxcRIjZqHy3Dv1GNry7i3zQCktTdWbULVKBbkAJkuHEnQ==
   dependencies:
     jquery ">=1.7"
+
+debug@=3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/debug/-/debug-3.1.0.tgz#5bb5a0672628b64149566ba16819e61518c67261"
+  integrity sha512-OX8XqP7/1a9cqkxYw2yXss15f26NKWBpDXQd0/uK/KPqdQhxbPa994hnzjcE2VqQpDslf55723cKPUOGSmMY3g==
+  dependencies:
+    ms "2.0.0"
 
 debug@^2.2.0, debug@^2.3.3:
   version "2.6.9"
@@ -502,6 +546,13 @@ fill-range@^7.0.1:
   dependencies:
     to-regex-range "^5.0.1"
 
+follow-redirects@1.5.10:
+  version "1.5.10"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.5.10.tgz#7b7a9f9aea2fdff36786a94ff643ed07f4ff5e2a"
+  integrity sha512-0V5l4Cizzvqt5D44aTXbFZz+FtyXV1vrDN6qrelxtfYQKW0KO0W2T/hkE8xvGa/540LkZlkaUjO4ailYTFtHVQ==
+  dependencies:
+    debug "=3.1.0"
+
 for-in@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/for-in/-/for-in-1.0.2.tgz#81068d295a8142ec0ac726c6e2200c30fb6d5e80"
@@ -562,6 +613,18 @@ graceful-fs@^4.1.11, graceful-fs@^4.1.2:
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.3.tgz#4a12ff1b60376ef09862c2093edd908328be8423"
   integrity sha512-a30VEBm4PEdx1dRB7MFK7BejejvCvBronbLjht+sHuGYj8PHs7M/5Z+rt5lw551vZ7yfTCj4Vuyy3mSJytDWRQ==
 
+handsontable@^7.4.2:
+  version "7.4.2"
+  resolved "https://registry.yarnpkg.com/handsontable/-/handsontable-7.4.2.tgz#11097b17c36e5dffd9f54febdd904c3006c4f28e"
+  integrity sha512-xJ81nZfXWHmS+K8/Eshj776MQSe8003iue1hHumgb0bnJmG/WLOxRpN+Vurdl/WPwI3+fQOqb9nTzmM5n/LI2g==
+  dependencies:
+    "@types/pikaday" "1.7.4"
+    core-js "^3.0.0"
+    hot-formula-parser "^3.0.1"
+    moment "2.24.0"
+    numbro "2.1.2"
+    pikaday "1.8.0"
+
 has-flag@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/has-flag/-/has-flag-3.0.0.tgz#b5d454dc2199ae225699f3467e5a07f3b955bafd"
@@ -614,6 +677,14 @@ hosted-git-info@^2.1.4:
   version "2.8.8"
   resolved "https://registry.yarnpkg.com/hosted-git-info/-/hosted-git-info-2.8.8.tgz#7539bd4bc1e0e0a895815a2e0262420b12858488"
   integrity sha512-f/wzC2QaWBs7t9IYqB4T3sR1xviIViXJRJTWBlx2Gf3g0Xi5vI7Yy4koXQ1c9OYDGHN9sBy1DQ2AB8fqZBWhUg==
+
+hot-formula-parser@^3.0.1:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/hot-formula-parser/-/hot-formula-parser-3.0.2.tgz#d71f03a4ef43ba3074bde383a0e36202b5b64116"
+  integrity sha512-W/Dj/UbIyuViMIQOQD6tUEVySl7jd6ei+gfWslTiRqa4yRhkyHnIz8N4oLnqgDRhhVAQIcFF5NfNz49k4X8IxQ==
+  dependencies:
+    "@handsontable/formulajs" "^2.0.2"
+    tiny-emitter "^2.1.0"
 
 inherits@^2.0.3, inherits@~2.0.3:
   version "2.0.4"
@@ -826,6 +897,11 @@ json-parse-better-errors@^1.0.1:
   resolved "https://registry.yarnpkg.com/json-parse-better-errors/-/json-parse-better-errors-1.0.2.tgz#bb867cfb3450e69107c131d1c514bab3dc8bcaa9"
   integrity sha512-mrqyZKfX5EhL7hvqcV6WG1yYjnjeuYDzDhhcAAUrq8Po85NBQBJP+ZDUT75qZQ98IkUoBqdkExkukOU7Ts2wrw==
 
+jstat@^1.9.2:
+  version "1.9.2"
+  resolved "https://registry.yarnpkg.com/jstat/-/jstat-1.9.2.tgz#cd2d24df200fd3488861dc7868be01ff65a238cc"
+  integrity sha512-nc3uAadgrWWvJz6RyXUFN0lvTWEXYxMVIrm6ZVoOh4YPLvukLKYpqMofKIE2ReWkL7gFw6hEo6VWZjotYW2Bsw==
+
 kind-of@^3.0.2, kind-of@^3.0.3, kind-of@^3.2.0:
   version "3.2.2"
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-3.2.2.tgz#31ea21a734bab9bbb0f32466d893aea51e4a3c64"
@@ -967,6 +1043,11 @@ mixin-deep@^1.2.0:
     for-in "^1.0.2"
     is-extendable "^1.0.1"
 
+moment@2.24.0, moment@>=2.14.0:
+  version "2.24.0"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
+  integrity sha512-bV7f+6l2QigeBBZSM/6yTNq4P2fNpSWj/0e7jQcy87A8e7o2nAfP/34/2ky5Vw4B9S446EtIhodAzkFCcR4dQg==
+
 mri@^1.1.0:
   version "1.1.5"
   resolved "https://registry.yarnpkg.com/mri/-/mri-1.1.5.tgz#ce21dba2c69f74a9b7cf8a1ec62307e089e223e0"
@@ -1040,6 +1121,13 @@ npm-run-all@^4.1.5:
     read-pkg "^3.0.0"
     shell-quote "^1.6.1"
     string.prototype.padend "^3.0.0"
+
+numbro@2.1.2:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/numbro/-/numbro-2.1.2.tgz#2d51104f09b5d69aef7e15bb565d7795e47ecfd6"
+  integrity sha512-7w833BxZmKGLE9HI0aREtNVRVH6WTYUUlWf4qgA5gKNhPQ4F/MRZ14sc0v8eoLORprk9ZTVwYaLwj8N3Zgxwiw==
+  dependencies:
+    bignumber.js "^8.0.1"
 
 object-copy@^0.1.0:
   version "0.1.0"
@@ -1143,6 +1231,11 @@ pify@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/pify/-/pify-3.0.0.tgz#e5a4acd2c101fdf3d9a4d07f0dbc4db49dd28176"
   integrity sha1-5aSs0sEB/fPZpNB/DbxNtJ3SgXY=
+
+pikaday@1.8.0:
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/pikaday/-/pikaday-1.8.0.tgz#ce930e257042e852e6aadee1115e01554b2d71c5"
+  integrity sha512-SgGxMYX0NHj9oQnMaSyAipr2gOrbB4Lfs/TJTb6H6hRHs39/5c5VZi73Q8hr53+vWjdn6HzkWcj8Vtl3c9ziaA==
 
 posix-character-classes@^0.1.0:
   version "0.1.1"
@@ -1582,6 +1675,11 @@ terser@^3.14.1:
     commander "^2.19.0"
     source-map "~0.6.1"
     source-map-support "~0.5.10"
+
+tiny-emitter@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/tiny-emitter/-/tiny-emitter-2.1.0.tgz#1d1a56edfc51c43e863cbb5382a72330e3555423"
+  integrity sha512-NB6Dk1A9xgQPMoGqC5CVXn123gWyte215ONT5Pp5a0yt4nlEoO1ZWeCwpncaekPHXO60i47ihFnZPiRPjRMq4Q==
 
 tinydate@^1.0.0:
   version "1.2.0"

@@ -1,4 +1,6 @@
-import { writable } from 'svelte/store'
+import {
+    writable
+} from 'svelte/store'
 
 export const users = createStore('users')
 export const todos = createStore('todos')
@@ -11,7 +13,10 @@ export const photos = createStore('photos')
 
 
 function createStore(path) {
-    const { subscribe, set } = writable([]);
+    const {
+        subscribe,
+        set
+    } = writable([]);
     let hydrated = false
 
     function hydrate() {
