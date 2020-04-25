@@ -4,8 +4,11 @@
 </script>
 
 
+<svelte:head>
+    <title> Dashboard</title>
+</svelte:head>
 <main>
-<Dashboard/>
+<!-- <Dashboard/> -->
 
 </main>
 

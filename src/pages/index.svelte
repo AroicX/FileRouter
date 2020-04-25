@@ -1,5 +1,4 @@
 <script>
-
   import {
     LOG_USER_IN
   } from '../utilis/actions.js'
@@ -10,8 +9,8 @@
   let email = 'umar@schoolmo.ng';
   let password = 'welcome';
   let error = '';
-  
- 
+
+
 
 
   function login() {
@@ -20,36 +19,33 @@
       password
     }
 
-
     const callback = user => {
-
       localStorage.currentUser = JSON.stringify({
         token: user.token,
         user: user.user,
-
       });
-
       if (localStorage.currentUser) {
         window.location = '/app';
-
-
       }
     }
 
     const onError = err => {
       error = err.message
-
     }
 
     LOG_USER_IN(email, password, callback, onError);
-
-
   }
 </script>
 
 
 <style>
+  .no-padding {
+    padding: auto !important;
+  }
 
+  .text-danger {
+    color: firebrick;
+  }
 </style>
 
 
@@ -57,33 +53,58 @@
   <title>Login</title>
 </svelte:head>
 
-<main>
-  <div class="signin-wrapper">
 
-    <div class="signin-box">
-      <h2 class="slim-logo"><a href="/">Schoolmo<span>.</span></a></h2>
-      <h2 class="signin-title-primary">Welcome back!</h2>
-      <h3 class="signin-title-secondary">Sign in to continue.</h3>
+
+<main class="dark-bg-color">
+
+  <div class="login-form sch-col-md-12 sch-col-sm-12 sch-md-m-x-0 ">
+
+    <div class="schoolmo-logo">
+      <p> School<span>mo</span></p>
+    </div>
+    <div class="wrapper login-form-wrapper">
+
+      <p class="login-form-wrapper-p ">Log in to your account</p>
+
       <form on:submit|preventDefault={login}>
+        <div class="bx--form-item">
+          <p> <span class="text-danger"> {error}</span></p>
+        </div>
+        <div class="bx--form-item">
+          <label for="text-input-3" class="bx--label ">Email</label>
+          <input id="text-input-3" type="email " class="bx--text-input" bind:value={email}
+            placeholder="augsbyaccess@gmail.com ">
+
+        </div>
+        <div class="bx--form-item ">
+          <label for="text-input-3 " class="bx--label ">Password</label>
+          <input id="text-input-3 " type="password" class="bx--text-input " bind:value={password}
+            placeholder="************** ">
+        </div>
+
+        <div class="bx--form-item ">
+          <button class="bx--btn bx--btn--primary no-padding" type="submit">Continue</button>
+        </div>
 
 
-
-        <p> <span class="text-danger"> {error}</span></p>
-
-        <div class="form-group">
-          <input type="text" class="form-control" bind:value={email} placeholder="Enter your email" required />
-        </div><!-- form-group -->
-        <div class="form-group mg-b-50">
-          <input type="password" class="form-control" bind:value={password} placeholder="Enter your password"
-            required />
-        </div><!-- form-group -->
-
-        <button class="btn btn-primary btn-block btn-signin" type="submit">Sign In</button>
       </form>
+      <div class="bx--col-lg-6 sch-col-md-5 bx--col-sm-6  sch-col-sm-12   bx--col-md-6 ">
+        <p><a href={null}>Forgot password ?</a></p>
+      </div>
+    </div>
 
-      <!-- <p class="mg-b-0">Don't have an account? <a href="/app">Sign Up</a></p> -->
-    </div><!-- signin-box -->
 
-  </div><!-- signin-wrapper -->
+
+    <hr class="bx--form-item line ">
+
+    <div class="bx--row form-padding ">
+      <div class="bx--col-lg-12 ">
+        <p>Don't have an account yet ? &nbsp; &nbsp;<a href={null}>Creat an account</a> </p>
+      </div>
+    </div>
+
+  </div>
+
+
 
 </main>
