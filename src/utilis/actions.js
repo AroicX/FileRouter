@@ -1,13 +1,11 @@
 import api from "./api";
-import {
-  STORAGE_TOKEN
-} from "../store.js";
+import { STORAGE_TOKEN } from "../store.js";
 const BASE_URL = api.BASE_URL;
 
 export function CHANGE_TOKEN(token) {
   localStorage.removeItem("token");
   localStorage.token = JSON.stringify({
-    token: token
+    token: token,
   });
   STORAGE_TOKEN.set(token);
 }
@@ -60,16 +58,19 @@ export async function TERMS(token, callback, onError) {
   }
 }
 
-export async function DASHBOARD(token, callback, onError) {
+export async function DASHBOARD(term_id, token, callback, onError) {
   try {
-    let dashboard = await fetch(`${BASE_URL}/dashboard/all`, {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `${token}`,
-      },
-    });
+    let dashboard = await fetch(
+      `${BASE_URL}/dashboard/all?term_id=${term_id}`,
+      {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `${token}`,
+        },
+      }
+    );
     dashboard = await dashboard.json();
 
     dashboard.status === "success" && callback && callback(dashboard);
@@ -84,7 +85,7 @@ export async function DASHBOARD(token, callback, onError) {
 
 export async function GET_SCHOOLS(token, callback, onError) {
   try {
-    let schools = await fetch(`${BASE_URL}/schools`, {
+    let schools = await fetch(`${BASE_URL}/payment/allschools`, {
       method: "GET",
       headers: {
         Accept: "application/json",
@@ -104,6 +105,7 @@ export async function GET_SCHOOLS(token, callback, onError) {
     return false;
   }
 }
+
 export async function GET_SCHOOL_BY_ID(id, token, callback, onError) {
   try {
     let schools = await fetch(`${BASE_URL}/schools/${id}`, {
@@ -114,6 +116,36 @@ export async function GET_SCHOOL_BY_ID(id, token, callback, onError) {
         Authorization: `${token}`,
       },
     });
+    schools = await schools.json();
+
+    schools.status === "success" && callback && callback(schools);
+    if (schools.status === "error") throw schools;
+
+    return schools;
+  } catch (err) {
+    onError && onError(err);
+    return false;
+  }
+}
+
+export async function SINGLE_SCHOOL_PAYMENT_DASHBOARD(
+  id,
+  token,
+  callback,
+  onError
+) {
+  try {
+    let schools = await fetch(
+      `${BASE_URL}/payment/allschools?school_id=${id}`,
+      {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `${token}`,
+        },
+      }
+    );
     schools = await schools.json();
 
     schools.status === "success" && callback && callback(schools);

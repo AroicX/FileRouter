@@ -1,18 +1,32 @@
 <script>
-
   import {
     LOG_USER_IN
   } from '../utilis/actions.js'
   import {
     isEmpty
   } from '../utilis/validation.js'
+  import {
+    goto
+  } from "@sveltech/routify"
+    import {
+    onMount
+  } from "svelte";
   let title = 'Login';
   let email = 'umar@schoolmo.ng';
   let password = 'welcome';
   let error = '';
-  
- 
 
+
+  onMount(() => {
+    const isLoggedIn = JSON.parse(localStorage.getItem("currentUser"));
+
+    if (isLoggedIn) {
+      $goto('/app')
+    }
+
+
+
+  });
 
   function login() {
     const payload = {
@@ -28,15 +42,15 @@
 
       });
       localStorage.token = JSON.stringify({
-       token: user.token,
+        token: user.token,
 
       });
 
       if (localStorage.currentUser) {
-        window.location = '/app';
-
-
+        $goto('/app');
       }
+
+
     }
 
     const onError = err => {

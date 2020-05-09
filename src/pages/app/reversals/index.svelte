@@ -1,8 +1,5 @@
 <script>
-    import {
-        onMount
-    } from "svelte";
-
+   
 
     // import Loader from "../../../components/Loader.svelte";
 </script>
@@ -16,6 +13,10 @@
         .hide {
             display: none !important;
             visibility: none !important;
+        }
+
+        .section-wrapper{
+            height: 5vh auto !important;
         }
     </style>
     <!-- <Loader status={true} /> -->

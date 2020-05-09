@@ -3,28 +3,37 @@
         onMount
     } from "svelte";
     import {
-        DASHBOARD
+        DASHBOARD,
+        CHANGE_TOKEN
     } from "../../utilis/actions.js";
     import Loader from "../../components/Loader.svelte";
+    import {
+        SET_TERM,
+        STORAGE_TOKEN
+    } from "../../store.js";
 
 
     let dashboard = [];
     let isLoading = null;
-
+    let token = null;
+    let term = [];
 
 
 
 
     onMount(() => {
-        // getDashboard();
+        STORAGE_TOKEN.subscribe(value => token = value);
+        SET_TERM.subscribe(value => term = value);
+        getDashboard();
     })
 
     function getDashboard() {
         isLoading = true;
-        const ls = JSON.parse(localStorage.getItem("token"));
 
         const callback = res => {
-            console.log(res)
+            dashboard = res.data[0];
+            CHANGE_TOKEN(res.token)
+
             return false;
 
         }
@@ -33,7 +42,7 @@
             console.error(err);
         }
 
-        DASHBOARD(ls.token, callback, onError);
+        DASHBOARD(term.term_id, token, callback, onError);
     }
 </script>
 
@@ -41,7 +50,12 @@
     <title>Dashboard</title>
 </svelte:head>
 
-
+<style>
+    h1,
+    .h1 {
+        font-size: 1.5rem;
+    }
+</style>
 
 <main>
     <Loader status={isLoading} />
@@ -73,7 +87,7 @@
                         <div class="media">
 
                             <div class="media-body">
-                                <h1>₦ 0.00</h1>
+                                <h1>₦ {dashboard.total_paid ? dashboard.total_paid : '0.00' }</h1>
                                 <p>Paid Fees</p>
                             </div><!-- media-body -->
                         </div><!-- media -->
@@ -84,8 +98,8 @@
                         <div class="media">
 
                             <div class="media-body">
-                                <h1>₦ 0.00 </h1>
-                                <p>Owed Fees</p>
+                                <h1>₦ {dashboard.total_owing ? dashboard.total_owing : '0.00' } </h1>
+                                <p>Total Number of Students</p>
                             </div><!-- media-body -->
                         </div><!-- media -->
                     </div><!-- card -->
@@ -95,8 +109,8 @@
                         <div class="media">
 
                             <div class="media-body">
-                                <h1>₦ 0.00 </h1>
-                                <p>Total Number of Students</p>
+                                <h1>₦ {dashboard.total_paid ? dashboard.total_paid : '0.00' } </h1>
+                                <p>Fully Paid Students</p>
                             </div><!-- media-body -->
                         </div><!-- media -->
                     </div><!-- card -->
@@ -109,8 +123,8 @@
                         <div class="media">
 
                             <div class="media-body">
-                                <h1>₦ 0.00</h1>
-                                <p>Total Fees</p>
+                                <h1>₦ {dashboard.total_paid ? dashboard.total_paid : '0.00' }</h1>
+                                <p>Partly Paid Students</p>
                             </div><!-- media-body -->
                         </div><!-- media -->
                     </div><!-- card -->
@@ -120,8 +134,8 @@
                         <div class="media">
 
                             <div class="media-body">
-                                <h1>₦ 0.00</h1>
-                                <p>Paid Fees</p>
+                                <h1>₦ {dashboard.total_paid ? dashboard.total_paid : '0.00' }</h1>
+                                <p>Owing Students</p>
                             </div><!-- media-body -->
                         </div><!-- media -->
                     </div><!-- card -->
@@ -131,7 +145,7 @@
                         <div class="media">
 
                             <div class="media-body">
-                                <h1>₦ 0.00 </h1>
+                                <h1>₦ {dashboard.total_paid ? dashboard.total_paid : '0.00' } </h1>
                                 <p>Owed Fees</p>
                             </div><!-- media-body -->
                         </div><!-- media -->
@@ -142,7 +156,7 @@
                         <div class="media">
 
                             <div class="media-body">
-                                <h1>₦ 0.00 </h1>
+                                <h1>₦ {dashboard.total_paid ? dashboard.total_paid : '0.00' } </h1>
                                 <p>Total Number of Students</p>
                             </div><!-- media-body -->
                         </div><!-- media -->

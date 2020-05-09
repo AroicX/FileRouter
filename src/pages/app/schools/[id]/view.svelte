@@ -3,22 +3,33 @@
     onMount
   } from "svelte";
   import {
-    GET_SCHOOL_BY_ID
+    GET_SCHOOL_BY_ID,
+    CHANGE_TOKEN,
+    SINGLE_SCHOOL_PAYMENT_DASHBOARD
+
   } from "../../../../utilis/actions.js";
   import {
     STORAGE_TOKEN
   } from "../../../../store.js";
+  import {
+    goto
+  } from "@sveltech/routify";
 
   export let slug;
   // export let route;
 
   let token = null;
   let school = [];
+  let payment_dashboard = [];
+
+
 
 
   onMount(() => {
     STORAGE_TOKEN.subscribe(value => token = value);
     getSchool();
+    getDashboard();
+
   })
 
 
@@ -26,13 +37,31 @@
   function getSchool() {
     const callback = res => {
       school = res.data;
+      CHANGE_TOKEN(res.token)
     }
 
     const onError = err => {
       console.log(err);
+
+      $goto('/app/not-found');
+
     }
 
     GET_SCHOOL_BY_ID(slug.id, token, callback, onError);
+  }
+
+  function getDashboard() {
+    const callback = res => {
+      payment_dashboard = res.data[0];
+      CHANGE_TOKEN(res.token)
+    }
+
+    const onError = err => {
+      console.log(err);
+
+    }
+
+    SINGLE_SCHOOL_PAYMENT_DASHBOARD(slug.id, token, callback, onError);
   }
 </script>
 
@@ -60,33 +89,195 @@
         <h6 class="slim-pagetitle">Single School </h6>
       </div><!-- slim-pageheader -->
 
-      <div class="section-wrapper">
+
+      <div class="row row-xs">
+
+        <div class="col-sm-6 col-lg-4">
+          <div class="card card-status">
+            <div class="media">
+
+              <div class="media-body">
+                <p>Amount Expected </p>
+                <h1>₦ {payment_dashboard.total_fees}</h1>
+              </div><!-- media-body -->
+            </div><!-- media -->
+          </div><!-- card -->
+        </div><!-- col-3 -->
+
+        <div class="col-sm-6 col-lg-4">
+          <div class="card card-status">
+            <div class="media">
+
+              <div class="media-body">
+                <p>Total Paid</p>
+                <h1>₦ {payment_dashboard.total_paid}</h1>
+              </div><!-- media-body -->
+            </div><!-- media -->
+          </div><!-- card -->
+        </div><!-- col-3 -->
+
+        <div class="col-sm-6 col-lg-4">
+          <div class="card card-status">
+            <div class="media">
+
+              <div class="media-body">
+                <p>Total Owing </p>
+                <h1>₦ {payment_dashboard.total_owing}</h1>
+              </div><!-- media-body -->
+            </div><!-- media -->
+          </div><!-- card -->
+        </div><!-- col-3 -->
 
 
-        <div class="table-wrapper">
-          <table id="schools" class="table display responsive nowrap">
-            <thead>
-              <tr>
-                <th class="wd-15p">School Id</th>
-                <th class="wd-15p">School Name</th>
-                <th class="wd-5p">Action</th>
-              </tr>
-            </thead>
-            <tbody>
 
-              {#if school}
-                                <tr>
-                                    <td>{school.schoolid}</td>
-                                    <td>{school.schoolname}</td>
+      </div><!-- row -->
 
-                                    <!-- <td> <a class="btn btn-info" href="/app/schools/{school.schoolid}">View</a> </td> -->
-                                </tr>
-                           {/if}
+      <div class="row row-xs my-3">
 
-                        </tbody>
-                    </table>
-        </div><!-- table-wrapper -->
-      </div><!-- section-wrapper -->
+        <div class="col-sm-6 col-lg-4">
+          <div class="card card-status">
+            <div class="media">
+
+              <div class="media-body">
+                <p>Fully Paid </p>
+                <h1>₦ {payment_dashboard.fully_paid_sum}</h1>
+              </div><!-- media-body -->
+            </div><!-- media -->
+          </div><!-- card -->
+        </div><!-- col-3 -->
+
+
+
+        <div class="col-sm-6 col-lg-4">
+          <div class="card card-status">
+            <div class="media">
+
+              <div class="media-body">
+                <p>Partly Paid </p>
+                <h1>₦ {payment_dashboard.partly_paid_sum}</h1>
+              </div><!-- media-body -->
+            </div><!-- media -->
+          </div><!-- card -->
+        </div><!-- col-3 -->
+
+
+        <div class="col-sm-6 col-lg-4">
+          <div class="card card-status">
+            <div class="media">
+
+              <div class="media-body">
+                <p>Not Paid </p>
+                <h1>₦ {payment_dashboard.not_paid_sum}</h1>
+              </div><!-- media-body -->
+            </div><!-- media -->
+          </div><!-- card -->
+        </div><!-- col-3 -->
+
+
+
+
+      </div><!-- row -->
+      <div class="row row-xs my-3">
+
+        <div class="col-sm-6 col-lg-3">
+          <div class="card card-status">
+            <div class="media">
+
+              <div class="media-body">
+                <p>This Term's Income </p>
+                <h1>₦ {payment_dashboard.fully_paid_sum}</h1>
+              </div><!-- media-body -->
+            </div><!-- media -->
+          </div><!-- card -->
+        </div><!-- col-3 -->
+
+        <div class="col-sm-6 col-lg-3">
+          <div class="card card-status">
+            <div class="media">
+
+              <div class="media-body">
+                <p>This Month's Income </p>
+                <h1>₦ {payment_dashboard.fully_paid_sum}</h1>
+              </div><!-- media-body -->
+            </div><!-- media -->
+          </div><!-- card -->
+        </div><!-- col-3 -->
+
+        <div class="col-sm-6 col-lg-3">
+          <div class="card card-status">
+            <div class="media">
+
+              <div class="media-body">
+                <p>This Week's Income </p>
+                <h1>₦ {payment_dashboard.fully_paid_sum}</h1>
+              </div><!-- media-body -->
+            </div><!-- media -->
+          </div><!-- card -->
+        </div><!-- col-3 -->
+
+        <div class="col-sm-6 col-lg-3">
+          <div class="card card-status">
+            <div class="media">
+
+              <div class="media-body">
+                <p>Today's Income </p>
+                <h1>₦ {payment_dashboard.fully_paid_sum}</h1>
+              </div><!-- media-body -->
+            </div><!-- media -->
+          </div><!-- card -->
+        </div><!-- col-3 -->
+
+
+
+
+      </div><!-- row -->
+
+
+      <div class="row row-xs my-2">
+
+        <div class="col-sm-6 col-lg-6">
+          <div class="card card-status">
+            <div class="media">
+
+              <div class="media-body">
+                <h5>School Info</h5>
+                <ul>
+                  <li>
+                    <p>Name: {school.schoolname}</p>
+                  </li>
+                  <li>
+                    <p>Address: None</p>
+                  </li>
+                  <li>
+                    <p>Total Students: 0</p>
+                  </li>
+                </ul>
+
+              </div><!-- media-body -->
+            </div><!-- media -->
+          </div><!-- card -->
+        </div><!-- col-3 -->
+
+        <div class="col-sm-6 col-lg-6">
+          <div class="card card-status">
+            <div class="media">
+
+              <div class="media-body py-3">
+                <h5>Other Information</h5>
+
+                <button class="btn btn-info">View Payment</button>
+                <button class="btn btn-success">View Fees Information</button>
+              </div><!-- media-body -->
+            </div><!-- media -->
+          </div><!-- card -->
+        </div><!-- col-3 -->
+
+
+      </div><!-- row -->
+
+
+
+
 
     </div><!-- container -->
   </div><!-- slim-mainpanel -->

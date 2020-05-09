@@ -1,23 +1,14 @@
 <script>
-  import { onMount } from "svelte";
+  import {
+    onMount
+  } from "svelte";
+  import {
+
+    goto
+  } from "@sveltech/routify";
   export let title;
 
-   let isLoggedIn;
-
-  onMount(() => {
-    if (localStorage.token) {
-      const ls = JSON.parse(localStorage.getItem("token"));
-
-      if (ls.token != null) {
-        isLoggedIn = true;
-        // window.location = '/app';
-        // return false;
-      }
-    }
-
-
-
-  });
+  let isLoggedIn;
 
 
 </script>

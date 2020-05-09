@@ -1,5 +1,8 @@
 <script>
-  import { url } from "@sveltech/routify";
+  import {
+    url,
+    goto
+  } from "@sveltech/routify";
 
 
   import {
@@ -10,33 +13,59 @@
     STORAGE_TOKEN
   } from "../../store.js";
   import {
-    TERMS
+    TERMS,
+    CHANGE_TOKEN
   } from "../../utilis/actions.js";
 
   export let title;
   let token = null;
   let terms = [];
+  let selectedTerm = null;
 
   onMount(() => {
+
+
+    const isLoggedIn = JSON.parse(localStorage.getItem("currentUser"));
+
+    // if (!isLoggedIn) {
+    //   $goto('/')
+    // }
+
+
 
     const ls = JSON.parse(localStorage.getItem("token"));
     token = ls.token;
     STORAGE_TOKEN.set(token);
     getTerms();
 
+    let checkTerm = JSON.parse(localStorage.getItem('selectedTerm'));
+    SET_TERM.set(checkTerm);
 
+    if (checkTerm) {
+      let term_id = checkTerm.term_id;
+      selectedTerm = checkTerm;
+
+      setTimeout(() => {
+        jQuery(`#term-${term_id}`).prop('checked', true); //add check mark
+      }, 1000)
+
+    }
 
   })
+
+
+  $: if (selectedTerm) {
+    //  console.log('Term',selectedTerm)
+  }
 
 
 
 
   const getTerms = () => {
-
     const callback = res => {
       SET_TERM.set(res.data);
       terms = res.data;
-
+      CHANGE_TOKEN(res.token);
     }
 
     const onError = err => {
@@ -48,37 +77,46 @@
   }
 
   function changeTerm(term) {
+
     let term_id = term.id;
+    let checkTerm = JSON.parse(localStorage.getItem('selectedTerm'));
+
+    selectedTerm = {
+      term_id: term_id,
+      term_data: term
+    };
+
+  
+
+    if (checkTerm) {
+      jQuery(`#term-${checkTerm.term_id}`).prop('checked', false); //remove check mark
+      jQuery(`#term-${term_id}`).prop('checked', true); // add check mark
+
+      localStorage.removeItem('selectedTerm')
+      localStorage.selectedTerm = JSON.stringify({
+        term_id: term_id,
+        term_data: term
+      })
+    } else {
+      jQuery(`#term-${term_id}`).prop('checked', true);
+
+      localStorage.selectedTerm = JSON.stringify({
+        term_id: term_id,
+        term_data: term
+      })
 
 
-    let getStoredTerms = [1, 2, 3, 4, 5, 6];
-
-
-    console.log(remove(getStoredTerms, term_id));
-
-
-
+    }
   }
 
-  function remove(arrOriginal, elementToRemove) {
-    return arrOriginal.filter(function (el) {
-      return el !== elementToRemove
-    });
+
+  function signOut(){
+    localStorage.removeItem('token');
+    localStorage.removeItem('currentUser');
+    $goto('/');
   }
 
-  function selectAll() {
 
-    var selectedTerm = [];
-
-    terms.forEach(item => {
-      jQuery(`#term-${item.id}`).prop('checked', true);
-      selectedTerm.push(item.id);
-
-    })
-
-
-    localStorage.setItem('selectedTerm', selectedTerm);
-  }
 </script>
 
 <svelte:head>
@@ -90,7 +128,7 @@
   <div class="slim-header">
     <div class="container">
       <div class="slim-header-left">
-        <h2 class="slim-logo"><a href="/">slim<span>.</span></a></h2>
+        <h2 class="slim-logo"><a href="/">School<span>mo</span></a></h2>
 
 
       </div><!-- slim-header-left -->
@@ -98,13 +136,13 @@
 
         <div class="dropdown dropdown-b">
           <a href={null} class="header-notification" data-toggle="dropdown">
-            Term
+            {selectedTerm != null ? `Term ${selectedTerm.term_data.name} of ${selectedTerm.term_data.session}` : 'Term'}
           </a>
           <div class="dropdown-menu">
             <div class="dropdown-menu-header">
-              <h6 class="dropdown-menu-title">Notifications</h6>
+              <h6 class="dropdown-menu-title">Select Term</h6>
               <div>
-                <a href={null} on:click|once={()=> selectAll() }>Select All Terms</a>
+                <!-- <a href={null} on:click|once={()=> selectAll() }>Select All Terms</a> -->
                 <!-- <a href={null}>Settings</a> -->
               </div>
             </div>
@@ -114,10 +152,10 @@
               <!-- loop starts here -->
               <a href={null} class="dropdown-link">
                 <div class="media">
-              <input  type="checkbox" value="{term}" id="term-{term.id}" on:click|once={() => changeTerm(term) }>
+              <input  type="radio" name="term" value="{term}" id="term-{term.id}" on:click|once={() => changeTerm(term) }>
 
                   <div class="media-body">
-                    <li >{term.session}</li>
+                    <li >Term {term.name} of {term.session}</li>
                   
                   </div>
                 </div><!-- media -->
@@ -142,7 +180,7 @@
               <a href="page-edit-profile.html" class="nav-link"><i class="icon ion-compose"></i> Edit Profile</a>
               <a href="page-activity.html" class="nav-link"><i class="icon ion-ios-bolt"></i> Activity Log</a>
               <a href="page-settings.html" class="nav-link"><i class="icon ion-ios-gear"></i> Account Settings</a>
-              <a href="page-signin.html" class="nav-link"><i class="icon ion-forward"></i> Sign Out</a>
+              <a href={null} class="nav-link" on:click|once={() => signOut() }><i class="icon ion-forward"></i> Sign Out</a>
             </nav>
           </div><!-- dropdown-menu -->
         </div><!-- dropdown -->
@@ -163,7 +201,7 @@
         <li class="nav-item ">
           <a class="nav-link" href="/app/schools/">
             <i class="icon ion-ios-filing-outline"></i>
-            <span>Schools</span>
+            <span>Schools </span>
           </a>
 
         </li>
@@ -185,7 +223,7 @@
           </div><!-- dropdown-menu -->
         </li>
         <li class="nav-item">
-          <a class="nav-link" href={$url('/app/reversals/')} data-toggle="dropdown">
+          <a class="nav-link" href={$url('/app/reversals/')}>
             <i class="icon ion-ios-gear-outline"></i>
             <span>Reversals</span>
           </a>
@@ -203,8 +241,26 @@
     </div><!-- container -->
   </div><!-- slim-navbar -->
 
+
+  {#if selectedTerm != null}
+
   <article>
+
     <slot />
-  </article>
+  </article> 
+  {:else}
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6 my-5 px-5 align-items-center">
+         <h2> Please Select a term To Contiune</h2>
+         <img class="img-responsive" src="/img/select.png" alt="select" style="height: 40vh;" >
+        </div>
+        <div class="col-md-3"></div>
+      </div>
+    </div>
+
+  {/if}
+
 
 </main>
