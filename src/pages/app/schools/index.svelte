@@ -11,10 +11,34 @@
     } from "../../../utilis/actions.js"
 
     import Loader from "../../../components/Loader.svelte";
+    import {
+        goto,
+        beforeUrlChange
+    } from "@sveltech/routify"
 
 
     let schools = [];
+    let url_id = null
     let token = null;
+
+
+    function checkUrl(id) {
+
+
+     $beforeUrlChange((event) => {
+            const data = {'name': 'John'};
+            event.state.params = data;
+
+            console.log(event)
+            return true;
+            // $$goto('',)
+        })
+
+    
+      $goto(id)
+    }
+
+
 
 
     onMount(() => {
@@ -29,7 +53,7 @@
             schools = res.data;
             CHANGE_TOKEN(res.token)
             init();
-        
+
         }
         const onError = err => {
             console.error(err);
@@ -116,7 +140,8 @@
                                  
                                     <td>{school.not_paid_count}</td>
 
-                                    <td> <a class="btn btn-info" href="/app/schools/{school.school_id}">View</a> </td>
+                                    <!-- <td> <a class="btn btn-info" href="/app/schools/{school.school_id}">View</a> </td> -->
+                                    <td> <button class="btn btn-info" on:click|once={() => checkUrl(school.school_id)}>View</button> </td>
                                 </tr>
                             {/each} 
 
