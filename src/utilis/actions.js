@@ -57,6 +57,27 @@ export async function TERMS(token, callback, onError) {
     return false;
   }
 }
+export async function ZONES(token, callback, onError) {
+  try {
+    let zones = await fetch(`${BASE_URL}/zones`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `${token}`,
+      },
+    });
+    zones = await zones.json();
+
+    zones.status === "success" && callback && callback(zones);
+    if (zones.status === "error") throw zones;
+
+    return zones;
+  } catch (err) {
+    onError && onError(err);
+    return false;
+  }
+}
 
 export async function DASHBOARD(term_id, token, callback, onError) {
   try {
@@ -71,6 +92,28 @@ export async function DASHBOARD(term_id, token, callback, onError) {
         },
       }
     );
+    dashboard = await dashboard.json();
+
+    dashboard.status === "success" && callback && callback(dashboard);
+    if (dashboard.status === "error") throw dashboard;
+
+    return dashboard;
+  } catch (err) {
+    onError && onError(err);
+    return false;
+  }
+}
+
+export async function GET_ZONAL_DASHBOARD_BY_ID(id, token, callback, onError) {
+  try {
+    let dashboard = await fetch(`${BASE_URL}/zones/${id}/dashboard`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `${token}`,
+      },
+    });
     dashboard = await dashboard.json();
 
     dashboard.status === "success" && callback && callback(dashboard);

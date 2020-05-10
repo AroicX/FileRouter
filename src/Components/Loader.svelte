@@ -6,7 +6,7 @@
 
        setTimeout(() => {
            status = !status
-       },8000)
+       },1000)
     }
 </script>
 

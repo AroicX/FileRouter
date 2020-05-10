@@ -14,12 +14,14 @@
   } from "../../store.js";
   import {
     TERMS,
-    CHANGE_TOKEN
+    CHANGE_TOKEN,
+    ZONES
   } from "../../utilis/actions.js";
 
   export let title;
   let token = null;
   let terms = [];
+  let zones = [];
   let selectedTerm = null;
 
   onMount(() => {
@@ -37,6 +39,7 @@
     token = ls.token;
     STORAGE_TOKEN.set(token);
     getTerms();
+    getZones();
 
     let checkTerm = JSON.parse(localStorage.getItem('selectedTerm'));
     SET_TERM.set(checkTerm);
@@ -76,6 +79,19 @@
 
   }
 
+  const getZones = () =>{
+    const callback = res => {
+      zones = res.data;
+      CHANGE_TOKEN(res.token);
+    }
+
+    const onError = err => {
+      console.error(err);
+    }
+
+    ZONES(token, callback, onError);
+  }
+
   function changeTerm(term) {
 
     let term_id = term.id;
@@ -86,7 +102,9 @@
       term_data: term
     };
 
-  
+      SET_TERM.set(selectedTerm);
+
+
 
     if (checkTerm) {
       jQuery(`#term-${checkTerm.term_id}`).prop('checked', false); //remove check mark
@@ -110,13 +128,11 @@
   }
 
 
-  function signOut(){
+  function signOut() {
     localStorage.removeItem('token');
     localStorage.removeItem('currentUser');
     $goto('/');
   }
-
-
 </script>
 
 <svelte:head>
@@ -197,6 +213,20 @@
             <span>Dashboard</span>
           </a>
 
+        </li>
+         <li class="nav-item with-sub">
+          <a class="nav-link" href={null}>
+            <i class="icon ion-ios-location-outline"></i>
+            <span>Zones</span>
+          </a>
+          <div class="sub-item">
+            <ul>
+            {#each zones as zone}
+              <li><a href={$url(`/app/zones/dashboard/${zone.zone_id}`,{name: zone.name })}>{zone.name}</a></li>
+            {/each}
+
+            </ul>
+          </div><!-- dropdown-menu -->
         </li>
         <li class="nav-item ">
           <a class="nav-link" href="/app/schools/">
