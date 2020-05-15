@@ -29,12 +29,6 @@
 
     const isLoggedIn = JSON.parse(localStorage.getItem("currentUser"));
 
-    // if (!isLoggedIn) {
-    //   $goto('/')
-    // }
-
-
-
     const ls = JSON.parse(localStorage.getItem("token"));
     token = ls.token;
     STORAGE_TOKEN.set(token);
@@ -57,8 +51,11 @@
   })
 
 
-  $: if (selectedTerm) {
-    //  console.log('Term',selectedTerm)
+  $: if (selectedTerm ) {
+  //  let location =  window.location;
+  //   // $goto('')
+  //   console.log(location)
+  //    console.log('Term',selectedTerm)
   }
 
 
@@ -192,10 +189,10 @@
           </a>
           <div class="dropdown-menu dropdown-menu-right">
             <nav class="nav">
-              <a href="page-profile.html" class="nav-link"><i class="icon ion-person"></i> View Profile</a>
+              <!-- <a href="page-profile.html" class="nav-link"><i class="icon ion-person"></i> View Profile</a>
               <a href="page-edit-profile.html" class="nav-link"><i class="icon ion-compose"></i> Edit Profile</a>
               <a href="page-activity.html" class="nav-link"><i class="icon ion-ios-bolt"></i> Activity Log</a>
-              <a href="page-settings.html" class="nav-link"><i class="icon ion-ios-gear"></i> Account Settings</a>
+              <a href="page-settings.html" class="nav-link"><i class="icon ion-ios-gear"></i> Account Settings</a> -->
               <a href={null} class="nav-link" on:click|once={() => signOut() }><i class="icon ion-forward"></i> Sign Out</a>
             </nav>
           </div><!-- dropdown-menu -->
@@ -259,13 +256,13 @@
           </a>
 
         </li>
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a class="nav-link" href={$url('/app/import-payments/')}>
             <i class="icon ion-ios-chatboxes-outline"></i>
             <span>Import Payments</span>
             <span class="square-8"></span>
           </a>
-        </li>
+        </li> -->
 
       </ul>
     </div><!-- container -->

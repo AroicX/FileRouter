@@ -11,6 +11,8 @@
     import {
     onMount
   } from "svelte";
+
+  
   let title = 'Login';
   let email = 'umar@schoolmo.ng';
   let password = 'welcome';

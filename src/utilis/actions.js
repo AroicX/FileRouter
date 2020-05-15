@@ -170,6 +170,36 @@ export async function GET_SCHOOL_BY_ID(id, token, callback, onError) {
     return false;
   }
 }
+export async function GET_SCHOOL_FEE_INFORMATION(
+  school_id,
+  term_id,
+  token,
+  callback,
+  onError
+) {
+  try {
+    let fees = await fetch(
+      `${BASE_URL}/payment/status/${school_id}/${term_id}`,
+      {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `${token}`,
+        },
+      }
+    );
+    fees = await fees.json();
+
+    fees.status === "success" && callback && callback(fees);
+    if (fees.status === "error") throw fees;
+
+    return fees;
+  } catch (err) {
+    onError && onError(err);
+    return false;
+  }
+}
 
 export async function SINGLE_SCHOOL_PAYMENT_DASHBOARD(
   id,
@@ -180,6 +210,37 @@ export async function SINGLE_SCHOOL_PAYMENT_DASHBOARD(
   try {
     let schools = await fetch(
       `${BASE_URL}/payment/allschools?school_id=${id}`,
+      {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `${token}`,
+        },
+      }
+    );
+    schools = await schools.json();
+
+    schools.status === "success" && callback && callback(schools);
+    if (schools.status === "error") throw schools;
+
+    return schools;
+  } catch (err) {
+    onError && onError(err);
+    return false;
+  }
+}
+
+export async function SINGLE_SCHOOL_PAYMENT_IN_A_TERM(
+  school_id,
+  term_id,
+  token,
+  callback,
+  onError
+) {
+  try {
+    let schools = await fetch(
+      `${BASE_URL}/payment/school/${school_id}?term_id=${term_id}`,
       {
         method: "GET",
         headers: {

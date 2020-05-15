@@ -12,7 +12,8 @@
     STORAGE_TOKEN
   } from "../../../../store.js";
   import {
-    goto
+    goto,
+    url
   } from "@sveltech/routify";
 
   export let slug;
@@ -86,7 +87,7 @@
           </li>
           <li class="breadcrumb-item active" aria-current="page">{school.schoolname}</li>
         </ol>
-        <h6 class="slim-pagetitle">Single School </h6>
+        <h6 class="slim-pagetitle">{school.schoolname}</h6>
       </div><!-- slim-pageheader -->
 
 
@@ -265,8 +266,8 @@
               <div class="media-body py-3">
                 <h5>Other Information</h5>
 
-                <button class="btn btn-info">View Payment</button>
-                <button class="btn btn-success">View Fees Information</button>
+                <a href={$url(`/app/schools/payments/${slug.id}`)} class="btn btn-info">View Payment</a>
+                <a href={$url(`/app/schools/fees-information/${slug.id}`)} class="btn btn-success">View Fees Information</a>
               </div><!-- media-body -->
             </div><!-- media -->
           </div><!-- card -->
