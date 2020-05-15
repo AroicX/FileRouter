@@ -17,8 +17,9 @@
   } from "@sveltech/routify";
 
   export let slug;
-  // export let route;
 
+
+  let isLoading = true;
   let token = null;
   let school = [];
   let payment_dashboard = [];
@@ -54,7 +55,11 @@
   function getDashboard() {
     const callback = res => {
       payment_dashboard = res.data[0];
-      CHANGE_TOKEN(res.token)
+      CHANGE_TOKEN(res.token);
+
+      setTimeout(() => {
+        isLoading = false;
+      }, 2000)
     }
 
     const onError = err => {
@@ -72,8 +77,17 @@
 </svelte:head>
 
 
-<main>
 
+{#if isLoading}
+<div class="loader">
+  <div class="bubble-1"></div>
+  <div class="bubble-2"></div>
+</div>
+
+
+{:else}
+
+<main>
 
   <div class="slim-mainpanel">
     <div class="container">
@@ -282,6 +296,6 @@
 
     </div><!-- container -->
   </div><!-- slim-mainpanel -->
-
-
 </main>
+
+{/if}

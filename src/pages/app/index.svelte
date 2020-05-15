@@ -14,7 +14,7 @@
 
 
     let dashboard = [];
-    let isLoading = null;
+    let isLoading = true;
     let token = null;
     let term = [];
 
@@ -30,15 +30,16 @@
     function getDashboard() {
         isLoading = true;
 
-       let getTerm = JSON.parse(localStorage.getItem('selectedTerm'));
-    //    console.table(getTerm);
+        let getTerm = JSON.parse(localStorage.getItem('selectedTerm'));
+        //    console.table(getTerm);
 
         const callback = res => {
             dashboard = res.data[0];
             CHANGE_TOKEN(res.token)
 
-            return false;
-
+            setTimeout(() => {
+                isLoading = false;
+            }, 1000)
         }
 
         const onError = err => {
@@ -60,8 +61,19 @@
     }
 </style>
 
+
+
+
+{#if isLoading}
+<div class="loader">
+  <div class="bubble-1"></div>
+  <div class="bubble-2"></div>
+</div>
+
+
+{:else}
 <main>
-    <Loader status={isLoading} />
+   
 
     <div class="slim-mainpanel">
         <div class="container">
@@ -175,3 +187,5 @@
 
 
 </main>
+
+{/if}

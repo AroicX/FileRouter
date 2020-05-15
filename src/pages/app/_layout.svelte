@@ -30,6 +30,9 @@
     const isLoggedIn = JSON.parse(localStorage.getItem("currentUser"));
 
     const ls = JSON.parse(localStorage.getItem("token"));
+    if(!ls){
+      window.location.replace('/');
+    }
     token = ls.token;
     STORAGE_TOKEN.set(token);
     getTerms();
