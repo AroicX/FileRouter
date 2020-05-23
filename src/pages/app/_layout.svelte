@@ -34,7 +34,7 @@
   let selectedZone = null;
 
   onMount(() => {
-
+//initillaztions
 
     const ls = JSON.parse(localStorage.getItem("token"));
     const user_type = JSON.parse(localStorage.getItem("currentUser"));
