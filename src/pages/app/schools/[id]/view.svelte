@@ -15,6 +15,8 @@
     goto,
     url
   } from "@sveltech/routify";
+    import numeral from 'numeral';
+
 
   export let slug;
 
@@ -113,7 +115,7 @@
 
               <div class="media-body">
                 <p>Amount Expected </p>
-                <h1>₦ {payment_dashboard.total_fees}</h1>
+                <h1>₦ {numeral(payment_dashboard.total_fees).format('0,0') }</h1>
               </div><!-- media-body -->
             </div><!-- media -->
           </div><!-- card -->
@@ -125,7 +127,7 @@
 
               <div class="media-body">
                 <p>Total Paid</p>
-                <h1>₦ {payment_dashboard.total_paid}</h1>
+                <h1>₦ {numeral(payment_dashboard.total_paid).format('0,0')}</h1>
               </div><!-- media-body -->
             </div><!-- media -->
           </div><!-- card -->
@@ -137,7 +139,7 @@
 
               <div class="media-body">
                 <p>Total Owing </p>
-                <h1>₦ {payment_dashboard.total_owing}</h1>
+                <h1>₦ {numeral(payment_dashboard.total_owing).format('0,0')}</h1>
               </div><!-- media-body -->
             </div><!-- media -->
           </div><!-- card -->
@@ -155,7 +157,7 @@
 
               <div class="media-body">
                 <p>Fully Paid </p>
-                <h1>₦ {payment_dashboard.fully_paid_sum}</h1>
+                <h1>₦ {numeral(payment_dashboard.fully_paid_sum).format('0,0')} </h1>
               </div><!-- media-body -->
             </div><!-- media -->
           </div><!-- card -->
@@ -169,7 +171,7 @@
 
               <div class="media-body">
                 <p>Partly Paid </p>
-                <h1>₦ {payment_dashboard.partly_paid_sum}</h1>
+                <h1>₦ {numeral(payment_dashboard.partly_paid_sum).format('0,0')} </h1>
               </div><!-- media-body -->
             </div><!-- media -->
           </div><!-- card -->
@@ -182,7 +184,7 @@
 
               <div class="media-body">
                 <p>Not Paid </p>
-                <h1>₦ {payment_dashboard.not_paid_sum}</h1>
+                <h1>₦ {numeral(payment_dashboard.not_paid_sum).format('0,0')}  </h1>
               </div><!-- media-body -->
             </div><!-- media -->
           </div><!-- card -->
@@ -200,7 +202,7 @@
 
               <div class="media-body">
                 <p>This Term's Income </p>
-                <h1>₦ {payment_dashboard.fully_paid_sum}</h1>
+                <h1>₦ {numeral(payment_dashboard.fully_paid_sum).format('0,0')} </h1>
               </div><!-- media-body -->
             </div><!-- media -->
           </div><!-- card -->
@@ -212,7 +214,7 @@
 
               <div class="media-body">
                 <p>This Month's Income </p>
-                <h1>₦ {payment_dashboard.fully_paid_sum}</h1>
+                <h1>₦ {numeral(payment_dashboard.fully_paid_sum).format('0,0')} </h1>
               </div><!-- media-body -->
             </div><!-- media -->
           </div><!-- card -->
@@ -224,7 +226,7 @@
 
               <div class="media-body">
                 <p>This Week's Income </p>
-                <h1>₦ {payment_dashboard.fully_paid_sum}</h1>
+                <h1>₦ {numeral(payment_dashboard.fully_paid_sum).format('0,0')} </h1>
               </div><!-- media-body -->
             </div><!-- media -->
           </div><!-- card -->
@@ -236,7 +238,7 @@
 
               <div class="media-body">
                 <p>Today's Income </p>
-                <h1>₦ {payment_dashboard.fully_paid_sum}</h1>
+                <h1>₦ {numeral(payment_dashboard.fully_paid_sum).format('0,0')}  </h1>
               </div><!-- media-body -->
             </div><!-- media -->
           </div><!-- card -->

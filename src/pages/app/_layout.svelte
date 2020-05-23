@@ -10,7 +10,10 @@
   } from "svelte";
   import {
     SET_TERM,
-    STORAGE_TOKEN
+    SET_ZONE,
+    STORAGE_TOKEN,
+    SET_USER_TYPE
+
   } from "../../store.js";
   import {
     TERMS,
@@ -22,43 +25,40 @@
   let token = null;
   let terms = [];
   let zones = [];
+  let userType = null;
+  let all_zones = {
+    zone_id: 'all',
+    name: "All Zones"
+  };
   let selectedTerm = null;
+  let selectedZone = null;
 
   onMount(() => {
 
 
-    const isLoggedIn = JSON.parse(localStorage.getItem("currentUser"));
-
     const ls = JSON.parse(localStorage.getItem("token"));
-    if(!ls){
+    const user_type = JSON.parse(localStorage.getItem("currentUser"));
+    userType = user_type ? user_type.user.zone : null;
+    if (!ls) {
       window.location.replace('/');
     }
     token = ls.token;
     STORAGE_TOKEN.set(token);
+    SET_USER_TYPE.set(user_type.user.zone);
     getTerms();
     getZones();
+    loadCheckers();
 
-    let checkTerm = JSON.parse(localStorage.getItem('selectedTerm'));
-    SET_TERM.set(checkTerm);
-
-    if (checkTerm) {
-      let term_id = checkTerm.term_id;
-      selectedTerm = checkTerm;
-
-      setTimeout(() => {
-        jQuery(`#term-${term_id}`).prop('checked', true); //add check mark
-      }, 1000)
-
-    }
 
   })
 
 
-  $: if (selectedTerm ) {
-  //  let location =  window.location;
-  //   // $goto('')
-  //   console.log(location)
-  //    console.log('Term',selectedTerm)
+  $: if (selectedTerm) {
+    SET_TERM.set(selectedTerm);
+  }
+
+  $: if (selectedZone) {
+    SET_ZONE.set(selectedZone);
   }
 
 
@@ -79,7 +79,7 @@
 
   }
 
-  const getZones = () =>{
+  const getZones = () => {
     const callback = res => {
       zones = res.data;
       CHANGE_TOKEN(res.token);
@@ -92,6 +92,35 @@
     ZONES(token, callback, onError);
   }
 
+  function loadCheckers() {
+    let checkTerm = JSON.parse(localStorage.getItem('selectedTerm'));
+    SET_TERM.set(checkTerm);
+
+    if (checkTerm) {
+      let term_id = checkTerm.term_id;
+      selectedTerm = checkTerm;
+
+      setTimeout(() => {
+        jQuery(`#term-${term_id}`).prop('checked', true); //add check mark
+      }, 1000)
+
+    }
+
+    let checkZone = JSON.parse(localStorage.getItem('selectedZone'));
+
+    SET_ZONE.set(checkZone);
+
+    if (checkZone) {
+      let zone_id = checkZone.zone.zone_id;
+      selectedZone = checkZone.zone;
+
+      setTimeout(() => {
+        jQuery(`#zone-${zone_id}`).prop('checked', true); //add check mark
+      }, 1000)
+
+    }
+  }
+
   function changeTerm(term) {
 
     let term_id = term.id;
@@ -102,7 +131,7 @@
       term_data: term
     };
 
-      SET_TERM.set(selectedTerm);
+    SET_TERM.set(selectedTerm);
 
 
 
@@ -121,6 +150,34 @@
       localStorage.selectedTerm = JSON.stringify({
         term_id: term_id,
         term_data: term
+      })
+
+
+    }
+  }
+
+  function changeZone(zone) {
+
+    let checkZone = JSON.parse(localStorage.getItem('selectedZone'));
+
+    selectedZone = zone;
+    SET_ZONE.set(selectedZone);
+
+
+
+    if (checkZone) {
+      jQuery(`#zone-${checkZone.zone_id}`).prop('checked', false); //remove check mark
+      jQuery(`#zone-${checkZone.zone_id}`).prop('checked', true); // add check mark
+
+      localStorage.removeItem('selectedZone')
+      localStorage.selectedZone = JSON.stringify({
+        zone
+      })
+    } else {
+      jQuery(`#zone-${zone.zone_id}`).prop('checked', true);
+
+      localStorage.selectedZone = JSON.stringify({
+        zone
       })
 
 
@@ -150,6 +207,66 @@
       </div><!-- slim-header-left -->
       <div class="slim-header-right">
 
+        {#if userType === 'Central User'}
+        <div class="dropdown dropdown-b" style="margin-right: 10px">
+          <a href={null} class="header-notification" data-toggle="dropdown">
+            {selectedZone != null ? `${selectedZone.name}` : 'Zone'}
+          </a>
+          <div class="dropdown-menu">
+            <div class="dropdown-menu-header">
+              <h6 class="dropdown-menu-title">Select Zone</h6>
+              <div>
+                <!-- <a href={null} on:click|once={()=> selectAll() }>Select All Terms</a> -->
+                <!-- <a href={null}>Settings</a> -->
+              </div>
+            </div>
+            <!-- dropdown-menu-header -->
+            <div class="dropdown-list">
+              <a href={null} class="dropdown-link">
+
+                <div class="media">
+                     <input 
+                       type="radio"
+                       name="zone" 
+                       value="{all_zones}" 
+                       id="zone-all" 
+                       on:click={() => changeZone(all_zones) }
+                      />
+                  <div class="media-body">
+                   <li on:click={() => changeZone(all_zones) } style="cursor: pointer;">ALL ZONES </li> 
+                  </div>
+                </div><!-- media -->
+
+
+                
+                   
+                  
+         
+              {#each zones as zone}
+              <!-- loop starts here -->
+                <div class="media">
+                    <input  type="radio" name="zone" value="{zone}" id="zone-{zone.zone_id}" on:click={() => changeZone(zone) }>
+
+                  <div class="media-body">
+                    <li on:click={() => changeZone(zone) } style="cursor: pointer;">{zone.name} </li>
+                  
+                  </div>
+                </div><!-- media -->
+                
+                
+            {/each}
+              </a>
+
+              <!-- <div class="dropdown-list-footer">
+                  <a href="page-notifications.html"><i class="fa fa-angle-down"></i> Show All Notifications</a>
+                </div> -->
+            </div><!-- dropdown-list -->
+          </div><!-- dropdown-menu-right -->
+        </div> 
+        <!-- dropdown -->
+
+      {/if}
+
         <div class="dropdown dropdown-b">
           <a href={null} class="header-notification" data-toggle="dropdown">
             {selectedTerm != null ? `Term ${selectedTerm.term_data.name} of ${selectedTerm.term_data.session}` : 'Term'}
@@ -168,10 +285,10 @@
               <!-- loop starts here -->
               <a href={null} class="dropdown-link">
                 <div class="media">
-              <input  type="radio" name="term" value="{term}" id="term-{term.id}" on:click|once={() => changeTerm(term) }>
+              <input  type="radio" name="term" value="{term}" id="term-{term.id}" on:click={() => changeTerm(term) }>
 
                   <div class="media-body">
-                    <li >Term {term.name} of {term.session}</li>
+                    <li on:click={() => changeTerm(term) } style="cursor: pointer;">Term {term.name} of {term.session}</li>
                   
                   </div>
                 </div><!-- media -->

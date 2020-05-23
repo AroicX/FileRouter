@@ -1,23 +1,32 @@
 import axios from "axios";
 import api from "./api";
 
-export const rq = axios.create({
+export const fetcher = axios.create({
   baseURL: api.BASE_URL,
   timeout: 5000,
+  transformResponse: axios.defaults.transformResponse.concat((data) => {
+    console.log(data.token);
+    return data;
+  }),
+  validateStatus: function (status) {
+    return status >= 200 && status < 400
+  }
 });
 
-rq.interceptors.request.use(
+fetcher.interceptors.request.use(
   function (config) {
-    let cache = JSON.parse(localStorage.staleState);
+    let looalToken = JSON.parse(localStorage.token);
 
-    // console.log(cache)
-
-    config.headers = { ...config.headers };
+    config.headers = {
+      ...config.headers,
+    };
     config.headers.Accept = "application/json";
     config.headers["Content-Type"] = "application/json";
-    config.headers.Authorization = `Bearer ${cache.token}`;
+    config.headers.Authorization = `${looalToken.token}`;
     // you can also do other modification in config
-    // console.log(config)
+    // config.url = `${config.url}?term_id=1`;
+
+    console.log(`The url to the api is ${config.url}`);
     return config;
   },
   function (error) {
@@ -25,10 +34,10 @@ rq.interceptors.request.use(
   }
 );
 
-rq.interceptors.response.use(
+fetcher.interceptors.response.use(
   function (response) {
-    if (response.status === 401) {
-      // your failure logic
+    if (response.status === 400) {
+      console.log("wahala dey");
     }
     return response;
   },

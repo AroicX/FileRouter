@@ -37,7 +37,19 @@
                     searchPlaceholder: 'Search...',
                     sSearch: '',
                     lengthMenu: '_MENU_ items/page',
-                }
+                },
+                 dom: 'Bfrtip',
+                lengthMenu: [
+                    [10, 25, 50, -1],
+                    ['10 rows', '25 rows', '50 rows', 'Show all']
+                ],
+                buttons: [
+                    'pageLength',
+                    'copyHtml5',
+                    'excelHtml5',
+                    'csvHtml5',
+                    'pdfHtml5',
+                ]
             });
 
 
@@ -52,10 +64,8 @@
         const callback = res => {
 
             payments = res.data;
-
-            setTimeout(() => {
-                init();
-            }, 2000)
+            init();
+        
 
         }
 

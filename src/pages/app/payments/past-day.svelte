@@ -3,36 +3,86 @@
         onMount
     } from "svelte";
 
+    import {
+        STORAGE_TOKEN
+    } from "../../../store.js";
 
- 
 
-    // import Loader from "..././../components/Loader.svelte";
+    import {
+        PAYMENT_ALL_SCHOOLS
+    } from "../../../utilis/actions.js";
+
+    let token = null;
+    let past_day = [];
 
 
+    import Loader from "../../../components/Loader.svelte";
 
 
     onMount(() => {
+        STORAGE_TOKEN.subscribe(value => token = value);
+        getPaymentsAll();
+
+    })
+
+
+
+    function init() {
 
         jQuery(document).ready(function ($) {
 
-            $('#allschools').DataTable({
+            $('#past-day').DataTable({
                 responsive: true,
                 language: {
                     searchPlaceholder: 'Search...',
                     sSearch: '',
                     lengthMenu: '_MENU_ items/page',
-                }
+                },
+                dom: 'Bfrtip',
+                lengthMenu: [
+                    [10, 25, 50, -1],
+                    ['10 rows', '25 rows', '50 rows', 'Show all']
+                ],
+                buttons: [
+                    'pageLength',
+                    'copyHtml5',
+                    'excelHtml5',
+                    'csvHtml5',
+                    'pdfHtml5',
+                ]
             });
 
 
         });
 
-    })
+    }
+
+    function getPaymentsAll() {
+
+
+
+        const callback = res => {
+
+            past_day = res.data;
+            init();
+
+
+        }
+
+        const onError = err => {
+            console.error(err);
+        }
+
+        PAYMENT_ALL_SCHOOLS(token, callback, onError);
+    }
 </script>
 
-<main >
+<svelte:head>
+    <title>Payment All Schools</title>
+</svelte:head>
+<main>
 
-    <!-- <Loader status={true} /> -->
+    <Loader status={true} />
 
     <div class="slim-mainpanel">
         <div class="container">
@@ -44,7 +94,7 @@
                     <li class="breadcrumb-item">
                         <a href='/payments/all-schools'>Payment</a>
                     </li>
-                    <li class="breadcrumb-item active" aria-current="page">Past Day</li>
+                    <li class="breadcrumb-item active" aria-current="page">All Schools</li>
                 </ol>
                 <h6 class="slim-pagetitle">Past Day </h6>
             </div><!-- slim-pageheader -->
@@ -53,328 +103,40 @@
 
 
                 <div class="table-wrapper">
-                    <table id="allschools" class="table display responsive nowrap">
+                    <table id="past-day" class="table display responsive nowrap">
                         <thead>
                             <tr>
-                                <th class="wd-15p">First name</th>
-                                <th class="wd-15p">Last name</th>
-                                <th class="wd-20p">Position</th>
-                                <th class="wd-15p">Start date</th>
-                                <th class="wd-10p">Salary</th>
+                                <th class="wd-15p">School Id</th>
+                                <th class="wd-15p">Student Id</th>
+                                <th class="wd-20p">Reference</th>
+                                <th class="wd-15p">Term</th>
+                                <th class="wd-10p">Session</th>
+                                <th class="wd-10p">Amount</th>
                                 <th class="wd-5p">Action</th>
                             </tr>
+
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Tiger</td>
-                                <td>Nixon</td>
-                                <td>System Architect</td>
-                                <td>2011/04/25</td>
-                                <td>$320,800</td>
-                                <td> <button class="btn btn-info">View</button> </td>
-                            </tr>
 
-                            <tr>
-                                <td>Tiger</td>
-                                <td>Nixon</td>
-                                <td>System Architect</td>
-                                <td>2011/04/25</td>
-                                <td>$320,800</td>
-                                <td> <button class="btn btn-info">View</button> </td>
-                            </tr>
+                            {#each past_day as payment }
+                                <tr>
+                                    <td>{payment.school_id}</td>
+                                    <td>{payment.student_id}</td>
+                                    <td>{payment.reference}</td>
+                                    <td>{payment.term}</td>
+                                    <td>{payment.session}</td>
+                                    <td>{payment.amount}</td>
+                                    <td> <button class="btn btn-info">View</button> </td>
+                                </tr>
+                            {/each}
 
-                            <tr>
-                                <td>Tiger</td>
-                                <td>Nixon</td>
-                                <td>System Architect</td>
-                                <td>2011/04/25</td>
-                                <td>$320,800</td>
-                                <td> <button class="btn btn-info">View</button> </td>
-                            </tr>
 
-                            <tr>
-                                <td>Tiger</td>
-                                <td>Nixon</td>
-                                <td>System Architect</td>
-                                <td>2011/04/25</td>
-                                <td>$320,800</td>
-                                <td> <button class="btn btn-info">View</button> </td>
-                            </tr>
-
-                            <tr>
-                                <td>Tiger</td>
-                                <td>Nixon</td>
-                                <td>System Architect</td>
-                                <td>2011/04/25</td>
-                                <td>$320,800</td>
-                                <td> <button class="btn btn-info">View</button> </td>
-                            </tr>
-
-                            <tr>
-                                <td>Tiger</td>
-                                <td>Nixon</td>
-                                <td>System Architect</td>
-                                <td>2011/04/25</td>
-                                <td>$320,800</td>
-                                <td> <button class="btn btn-info">View</button> </td>
-                            </tr>
-
-                            <tr>
-                                <td>Tiger</td>
-                                <td>Nixon</td>
-                                <td>System Architect</td>
-                                <td>2011/04/25</td>
-                                <td>$320,800</td>
-                                <td> <button class="btn btn-info">View</button> </td>
-                            </tr>
-
-                            <tr>
-                                <td>Tiger</td>
-                                <td>Nixon</td>
-                                <td>System Architect</td>
-                                <td>2011/04/25</td>
-                                <td>$320,800</td>
-                                <td> <button class="btn btn-info">View</button> </td>
-                            </tr>
-
-                            <tr>
-                                <td>Tiger</td>
-                                <td>Nixon</td>
-                                <td>System Architect</td>
-                                <td>2011/04/25</td>
-                                <td>$320,800</td>
-                                <td> <button class="btn btn-info">View</button> </td>
-                            </tr>
-
-                            <tr>
-                                <td>Tiger</td>
-                                <td>Nixon</td>
-                                <td>System Architect</td>
-                                <td>2011/04/25</td>
-                                <td>$320,800</td>
-                                <td> <button class="btn btn-info">View</button> </td>
-                            </tr>
-
-                            <tr>
-                                <td>Tiger</td>
-                                <td>Nixon</td>
-                                <td>System Architect</td>
-                                <td>2011/04/25</td>
-                                <td>$320,800</td>
-                                <td> <button class="btn btn-info">View</button> </td>
-                            </tr>
-
-                            <tr>
-                                <td>Tiger</td>
-                                <td>Nixon</td>
-                                <td>System Architect</td>
-                                <td>2011/04/25</td>
-                                <td>$320,800</td>
-                                <td> <button class="btn btn-info">View</button> </td>
-                            </tr>
-
-                            <tr>
-                                <td>Tiger</td>
-                                <td>Nixon</td>
-                                <td>System Architect</td>
-                                <td>2011/04/25</td>
-                                <td>$320,800</td>
-                                <td> <button class="btn btn-info">View</button> </td>
-                            </tr>
-
-                            <tr>
-                                <td>Tiger</td>
-                                <td>Nixon</td>
-                                <td>System Architect</td>
-                                <td>2011/04/25</td>
-                                <td>$320,800</td>
-                                <td> <button class="btn btn-info">View</button> </td>
-                            </tr>
-
-                            <tr>
-                                <td>Tiger</td>
-                                <td>Nixon</td>
-                                <td>System Architect</td>
-                                <td>2011/04/25</td>
-                                <td>$320,800</td>
-                                <td> <button class="btn btn-info">View</button> </td>
-                            </tr>
-
-                            <tr>
-                                <td>Tiger</td>
-                                <td>Nixon</td>
-                                <td>System Architect</td>
-                                <td>2011/04/25</td>
-                                <td>$320,800</td>
-                                <td> <button class="btn btn-info">View</button> </td>
-                            </tr>
-
-                            <tr>
-                                <td>Tiger</td>
-                                <td>Nixon</td>
-                                <td>System Architect</td>
-                                <td>2011/04/25</td>
-                                <td>$320,800</td>
-                                <td> <button class="btn btn-info">View</button> </td>
-                            </tr>
-
-                            <tr>
-                                <td>Tiger</td>
-                                <td>Nixon</td>
-                                <td>System Architect</td>
-                                <td>2011/04/25</td>
-                                <td>$320,800</td>
-                                <td> <button class="btn btn-info">View</button> </td>
-                            </tr>
-
-                            <tr>
-                                <td>Tiger</td>
-                                <td>Nixon</td>
-                                <td>System Architect</td>
-                                <td>2011/04/25</td>
-                                <td>$320,800</td>
-                                <td> <button class="btn btn-info">View</button> </td>
-                            </tr>
-
-                            <tr>
-                                <td>Tiger</td>
-                                <td>Nixon</td>
-                                <td>System Architect</td>
-                                <td>2011/04/25</td>
-                                <td>$320,800</td>
-                                <td> <button class="btn btn-info">View</button> </td>
-                            </tr>
-
-                            <tr>
-                                <td>Tiger</td>
-                                <td>Nixon</td>
-                                <td>System Architect</td>
-                                <td>2011/04/25</td>
-                                <td>$320,800</td>
-                                <td> <button class="btn btn-info">View</button> </td>
-                            </tr>
-
-                            <tr>
-                                <td>Tiger</td>
-                                <td>Nixon</td>
-                                <td>System Architect</td>
-                                <td>2011/04/25</td>
-                                <td>$320,800</td>
-                                <td> <button class="btn btn-info">View</button> </td>
-                            </tr>
-
-                            <tr>
-                                <td>Tiger</td>
-                                <td>Nixon</td>
-                                <td>System Architect</td>
-                                <td>2011/04/25</td>
-                                <td>$320,800</td>
-                                <td> <button class="btn btn-info">View</button> </td>
-                            </tr>
-
-                            <tr>
-                                <td>Tiger</td>
-                                <td>Nixon</td>
-                                <td>System Architect</td>
-                                <td>2011/04/25</td>
-                                <td>$320,800</td>
-                                <td> <button class="btn btn-info">View</button> </td>
-                            </tr>
-
-                            <tr>
-                                <td>Tiger</td>
-                                <td>Nixon</td>
-                                <td>System Architect</td>
-                                <td>2011/04/25</td>
-                                <td>$320,800</td>
-                                <td> <button class="btn btn-info">View</button> </td>
-                            </tr>
-
-                            <tr>
-                                <td>Tiger</td>
-                                <td>Nixon</td>
-                                <td>System Architect</td>
-                                <td>2011/04/25</td>
-                                <td>$320,800</td>
-                                <td> <button class="btn btn-info">View</button> </td>
-                            </tr>
-
-                            <tr>
-                                <td>Tiger</td>
-                                <td>Nixon</td>
-                                <td>System Architect</td>
-                                <td>2011/04/25</td>
-                                <td>$320,800</td>
-                                <td> <button class="btn btn-info">View</button> </td>
-                            </tr>
-
-                            <tr>
-                                <td>Tiger</td>
-                                <td>Nixon</td>
-                                <td>System Architect</td>
-                                <td>2011/04/25</td>
-                                <td>$320,800</td>
-                                <td> <button class="btn btn-info">View</button> </td>
-                            </tr>
-
-                            <tr>
-                                <td>Tiger</td>
-                                <td>Nixon</td>
-                                <td>System Architect</td>
-                                <td>2011/04/25</td>
-                                <td>$320,800</td>
-                                <td> <button class="btn btn-info">View</button> </td>
-                            </tr>
-
-                            <tr>
-                                <td>Tiger</td>
-                                <td>Nixon</td>
-                                <td>System Architect</td>
-                                <td>2011/04/25</td>
-                                <td>$320,800</td>
-                                <td> <button class="btn btn-info">View</button> </td>
-                            </tr>
-
-                            <tr>
-                                <td>Tiger</td>
-                                <td>Nixon</td>
-                                <td>System Architect</td>
-                                <td>2011/04/25</td>
-                                <td>$320,800</td>
-                                <td> <button class="btn btn-info">View</button> </td>
-                            </tr>
-
-                            <tr>
-                                <td>Tiger</td>
-                                <td>Nixon</td>
-                                <td>System Architect</td>
-                                <td>2011/04/25</td>
-                                <td>$320,800</td>
-                                <td> <button class="btn btn-info">View</button> </td>
-                            </tr>
-
-                            <tr>
-                                <td>Tiger</td>
-                                <td>Nixon</td>
-                                <td>System Architect</td>
-                                <td>2011/04/25</td>
-                                <td>$320,800</td>
-                                <td> <button class="btn btn-info">View</button> </td>
-                            </tr>
-
-                            <tr>
-                                <td>Tiger</td>
-                                <td>Nixon</td>
-                                <td>System Architect</td>
-                                <td>2011/04/25</td>
-                                <td>$320,800</td>
-                                <td> <button class="btn btn-info">View</button> </td>
-                            </tr>
 
                         </tbody>
                     </table>
                 </div><!-- table-wrapper -->
             </div><!-- section-wrapper -->
+
 
         </div><!-- container -->
     </div><!-- slim-mainpanel -->

@@ -1,5 +1,9 @@
 import api from "./api";
 import { STORAGE_TOKEN } from "../store.js";
+import { goto } from "@sveltech/routify";
+
+import { fetcher } from "./index";
+
 const BASE_URL = api.BASE_URL;
 
 export function CHANGE_TOKEN(token) {
@@ -8,6 +12,20 @@ export function CHANGE_TOKEN(token) {
     token: token,
   });
   STORAGE_TOKEN.set(token);
+}
+export function JWT_EXPIRED(err) {
+  if (err.message === "jwt expired") {
+    localStorage.removeItem("token");
+    localStorage.removeItem("currentUser");
+    $goto("/");
+    return false;
+  }
+  if (err.message === "invalid token") {
+    localStorage.removeItem("token");
+    localStorage.removeItem("currentUser");
+    $goto("/");
+    return false;
+  }
 }
 
 export async function LOG_USER_IN(email, password, callback, onError) {
@@ -31,6 +49,7 @@ export async function LOG_USER_IN(email, password, callback, onError) {
 
     return user;
   } catch (err) {
+    JWT_EXPIRED(err);
     onError && onError(err);
     return false;
   }
@@ -53,6 +72,7 @@ export async function TERMS(token, callback, onError) {
 
     return term;
   } catch (err) {
+    JWT_EXPIRED(err);
     onError && onError(err);
     return false;
   }
@@ -74,6 +94,7 @@ export async function ZONES(token, callback, onError) {
 
     return zones;
   } catch (err) {
+    JWT_EXPIRED(err);
     onError && onError(err);
     return false;
   }
@@ -99,6 +120,7 @@ export async function DASHBOARD(term_id, token, callback, onError) {
 
     return dashboard;
   } catch (err) {
+    JWT_EXPIRED(err);
     onError && onError(err);
     return false;
   }
@@ -121,14 +143,15 @@ export async function GET_ZONAL_DASHBOARD_BY_ID(id, token, callback, onError) {
 
     return dashboard;
   } catch (err) {
+    JWT_EXPIRED(err);
     onError && onError(err);
     return false;
   }
 }
 
-export async function GET_SCHOOLS(token, callback, onError) {
+export async function GET_SCHOOLS(term_id, token, callback, onError) {
   try {
-    let schools = await fetch(`${BASE_URL}/payment/allschools`, {
+    let schools = await fetch(`${BASE_URL}/dashboard/list?term_id=${term_id}`, {
       method: "GET",
       headers: {
         Accept: "application/json",
@@ -144,6 +167,7 @@ export async function GET_SCHOOLS(token, callback, onError) {
 
     return schools;
   } catch (err) {
+    JWT_EXPIRED(err);
     onError && onError(err);
     return false;
   }
@@ -166,6 +190,7 @@ export async function GET_SCHOOL_BY_ID(id, token, callback, onError) {
 
     return schools;
   } catch (err) {
+    JWT_EXPIRED(err);
     onError && onError(err);
     return false;
   }
@@ -196,6 +221,7 @@ export async function GET_SCHOOL_FEE_INFORMATION(
 
     return fees;
   } catch (err) {
+    JWT_EXPIRED(err);
     onError && onError(err);
     return false;
   }
@@ -226,6 +252,7 @@ export async function SINGLE_SCHOOL_PAYMENT_DASHBOARD(
 
     return schools;
   } catch (err) {
+    JWT_EXPIRED(err);
     onError && onError(err);
     return false;
   }
@@ -257,6 +284,7 @@ export async function SINGLE_SCHOOL_PAYMENT_IN_A_TERM(
 
     return schools;
   } catch (err) {
+    JWT_EXPIRED(err);
     onError && onError(err);
     return false;
   }
@@ -279,6 +307,7 @@ export async function PAYMENT_ALL_SCHOOLS(token, callback, onError) {
 
     return schools;
   } catch (err) {
+    JWT_EXPIRED(err);
     onError && onError(err);
     return false;
   }

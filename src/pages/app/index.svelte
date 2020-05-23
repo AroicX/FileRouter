@@ -12,26 +12,35 @@
         STORAGE_TOKEN
     } from "../../store.js";
 
+    import numeral from 'numeral'
+
 
     let dashboard = [];
     let isLoading = true;
     let token = null;
     let term = [];
+    let user = [];
+    let terms = [];
 
 
 
 
     onMount(() => {
+        const userData = JSON.parse(localStorage.getItem("currentUser"));
+        user = userData;
+
         STORAGE_TOKEN.subscribe(value => token = value);
-        // SET_TERM.subscribe(value => term = value);
-        getDashboard();
+        SET_TERM.subscribe(value => terms = value);
+        
+
+
+      
     })
 
     function getDashboard() {
         isLoading = true;
 
         let getTerm = JSON.parse(localStorage.getItem('selectedTerm'));
-        //    console.table(getTerm);
 
         const callback = res => {
             dashboard = res.data[0];
@@ -47,6 +56,10 @@
         }
 
         DASHBOARD(getTerm.term_id, token, callback, onError);
+    }
+
+    $: if (terms) {
+        getDashboard();
     }
 </script>
 
@@ -82,7 +95,7 @@
                     <li class="breadcrumb-item"><a href={null}>Home</a></li>
                     <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
                 </ol>
-                <h6 class="slim-pagetitle">Welcome back, Katherine</h6>
+                <h6 class="slim-pagetitle">Welcome back, {user.user.name}</h6>
             </div><!-- slim-pageheader -->
 
             <div class="row row-xs">
@@ -91,8 +104,8 @@
                         <div class="media">
 
                             <div class="media-body">
-                                <h1>₦ {dashboard.total_fees ? dashboard.total_fees : '0.00' }</h1>
-                                <p>Total Fees</p>
+                                <h1>₦ {dashboard.total_fees ? numeral(dashboard.total_fees).format('0,0') : '0.00' }</h1>
+                                <p>Total Expected Fees</p>
                             </div><!-- media-body -->
                         </div><!-- media -->
                     </div><!-- card -->
@@ -103,80 +116,79 @@
 
                             <div class="media-body">
                                 <h1>₦ {dashboard.total_paid ? dashboard.total_paid : '0.00' }</h1>
-                                <p>Paid Fees</p>
+                                <p>Total Paid Fees</p>
                             </div><!-- media-body -->
                         </div><!-- media -->
                     </div><!-- card -->
                 </div><!-- col-3 -->
-                <div class="col-sm-6 col-lg-3 mg-t-10 mg-lg-t-0">
-                    <div class="card card-status">
-                        <div class="media">
 
-                            <div class="media-body">
-                                <h1>₦ {dashboard.total_owing ? dashboard.total_owing : '0.00' } </h1>
-                                <p>Total Number of Students</p>
-                            </div><!-- media-body -->
-                        </div><!-- media -->
-                    </div><!-- card -->
-                </div><!-- col-3 -->
                 <div class="col-sm-6 col-lg-3 mg-t-10 mg-lg-t-0">
                     <div class="card card-status">
                         <div class="media">
 
                             <div class="media-body">
                                 <h1>₦ {dashboard.total_paid ? dashboard.total_paid : '0.00' } </h1>
+                                <p>Total Owing Fees</p>
+                            </div><!-- media-body -->
+                        </div><!-- media -->
+                    </div><!-- card -->
+                </div><!-- col-3 -->
+
+                <div class="col-sm-6 col-lg-3 mg-t-10 mg-lg-t-0">
+                    <div class="card card-status">
+                        <div class="media">
+
+                            <div class="media-body">
+                                <h1> {dashboard.total_paid ? dashboard.total_paid : '0' } </h1>
+                                <p>Total Number of Students</p>
+                            </div><!-- media-body -->
+                        </div><!-- media -->
+                    </div><!-- card -->
+                </div><!-- col-3 -->
+
+
+            </div><!-- row -->
+
+            <div class="row row-xs py-5">
+
+
+                <div class="col-sm-6 col-lg-3 mg-t-10 mg-lg-t-0">
+                    <div class="card card-status">
+                        <div class="media">
+
+                            <div class="media-body">
+                                <h1> {dashboard.total_paid ? dashboard.total_owing : '0' } </h1>
+                                <p>Total Owing Students</p>
+                            </div><!-- media-body -->
+                        </div><!-- media -->
+                    </div><!-- card -->
+                </div><!-- col-3 -->
+                <div class="col-sm-6 col-lg-3 mg-t-10 mg-lg-t-0">
+                    <div class="card card-status">
+                        <div class="media">
+
+                            <div class="media-body">
+                                <h1>{dashboard.total_paid ? dashboard.total_paid : '0' } </h1>
                                 <p>Fully Paid Students</p>
                             </div><!-- media-body -->
                         </div><!-- media -->
                     </div><!-- card -->
                 </div><!-- col-3 -->
-            </div><!-- row -->
 
-            <div class="row row-xs py-5">
+
                 <div class="col-sm-6 col-lg-3">
                     <div class="card card-status">
                         <div class="media">
 
                             <div class="media-body">
-                                <h1>₦ {dashboard.total_paid ? dashboard.total_paid : '0.00' }</h1>
+                                <h1> {dashboard.total_paid ? dashboard.total_paid : '0' }</h1>
                                 <p>Partly Paid Students</p>
                             </div><!-- media-body -->
                         </div><!-- media -->
                     </div><!-- card -->
                 </div><!-- col-3 -->
-                <div class="col-sm-6 col-lg-3 mg-t-10 mg-sm-t-0">
-                    <div class="card card-status">
-                        <div class="media">
 
-                            <div class="media-body">
-                                <h1>₦ {dashboard.total_paid ? dashboard.total_paid : '0.00' }</h1>
-                                <p>Owing Students</p>
-                            </div><!-- media-body -->
-                        </div><!-- media -->
-                    </div><!-- card -->
-                </div><!-- col-3 -->
-                <div class="col-sm-6 col-lg-3 mg-t-10 mg-lg-t-0">
-                    <div class="card card-status">
-                        <div class="media">
-
-                            <div class="media-body">
-                                <h1>₦ {dashboard.total_paid ? dashboard.total_paid : '0.00' } </h1>
-                                <p>Owed Fees</p>
-                            </div><!-- media-body -->
-                        </div><!-- media -->
-                    </div><!-- card -->
-                </div><!-- col-3 -->
-                <div class="col-sm-6 col-lg-3 mg-t-10 mg-lg-t-0">
-                    <div class="card card-status">
-                        <div class="media">
-
-                            <div class="media-body">
-                                <h1>₦ {dashboard.total_paid ? dashboard.total_paid : '0.00' } </h1>
-                                <p>Total Number of Students</p>
-                            </div><!-- media-body -->
-                        </div><!-- media -->
-                    </div><!-- card -->
-                </div><!-- col-3 -->
+               
             </div><!-- row -->
 
 

@@ -15,6 +15,7 @@
     goto,
     url
   } from "@sveltech/routify";
+  import numeral from 'numeral';
 
   export let slug;
 
@@ -35,7 +36,26 @@
 
   function init() {
     jQuery(document).ready(function ($) {
-      $('#schools').DataTable();
+      $('#schools').DataTable({
+        responsive: true,
+        language: {
+          searchPlaceholder: 'Search...',
+          sSearch: '',
+          lengthMenu: '_MENU_ items/page',
+        },
+        dom: 'Bfrtip',
+        lengthMenu: [
+          [10, 25, 50, -1],
+          ['10 rows', '25 rows', '50 rows', 'Show all']
+        ],
+        buttons: [
+          'pageLength',
+          'copyHtml5',
+          'excelHtml5',
+          'csvHtml5',
+          'pdfHtml5',
+        ]
+      });
     });
   }
 
@@ -96,12 +116,10 @@
           <li class="breadcrumb-item">
             <a href='/app/schools'>School</a>
           </li>
-           <li class="breadcrumb-item">
-            <a href={$url(`/app/schools/${school.schoolid}`)}>{school.schoolname}</a>
-          </li>
-
-          <li class="breadcrumb-item active" aria-current="page">Fee Information
-            <li />
+          <li class="breadcrumb-item">
+            <a href={$url(`/app/schools/${school.schoolid}`)}>{school.schoolname} </a> </li> <li
+              class="breadcrumb-item active" aria-current="page">Fee Information
+              <li />
         </ol>
         <h6 class="slim-pagetitle">{school.schoolname} </h6>
       </div><!-- slim-pageheader -->
@@ -128,9 +146,9 @@
                 <td>{i + 1}</td>
                 <td>{fee.student_id}</td>
                 <td>{fee.name}</td>
-                <td>₦ {fee.total_fees}</td>
-                <td>₦ {fee.total_paid}</td>
-                <td>₦ {fee.total_owing}</td>
+                <td>₦ {numeral(fee.total_fees).format('0,0')}</td>
+                <td>₦ {numeral(fee.total_paid).format('0,0')}</td>
+                <td>₦ {numeral(fee.total_owing).format('0,0')}</td>
                 <td>{fee.created_at}</td>
 
               </tr>
