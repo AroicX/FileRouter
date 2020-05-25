@@ -5,13 +5,13 @@
 
   import {
     GET_SCHOOL_BY_ID,
-    CHANGE_TOKEN,
     SINGLE_SCHOOL_PAYMENT_IN_A_TERM
   } from "../../../../../utilis/actions.js";
 
   import {
     STORAGE_TOKEN,
-    SET_TERM
+    SET_TERM,
+    SET_ZONE
   } from "../../../../../store.js";
 
   import {
@@ -30,6 +30,7 @@
   let token = null;
   let school = [];
   let terms = [];
+  let zones = [];
   let payment_info = [];
 
 
@@ -38,6 +39,7 @@
   onMount(() => {
     STORAGE_TOKEN.subscribe(value => token = value);
     SET_TERM.subscribe(value => terms = value);
+    SET_ZONE.subscribe(value => zones = value);
     getSchool();
 
   })
@@ -45,25 +47,25 @@
   function init() {
     jQuery(document).ready(function ($) {
       $('#schools').DataTable({
-                responsive: true,
-                language: {
-                    searchPlaceholder: 'Search...',
-                    sSearch: '',
-                    lengthMenu: '_MENU_ items/page',
-                },
-                 dom: 'Bfrtip',
-                lengthMenu: [
-                    [10, 25, 50, -1],
-                    ['10 rows', '25 rows', '50 rows', 'Show all']
-                ],
-                buttons: [
-                    'pageLength',
-                    'copyHtml5',
-                    'excelHtml5',
-                    'csvHtml5',
-                    'pdfHtml5',
-                ]
-            });
+        responsive: true,
+        language: {
+          searchPlaceholder: 'Search...',
+          sSearch: '',
+          lengthMenu: '_MENU_ items/page',
+        },
+        dom: 'Bfrtip',
+        lengthMenu: [
+          [10, 25, 50, -1],
+          ['10 rows', '25 rows', '50 rows', 'Show all']
+        ],
+        buttons: [
+          'pageLength',
+          'copyHtml5',
+          'excelHtml5',
+          'csvHtml5',
+          'pdfHtml5',
+        ]
+      });
     });
   }
 
@@ -71,37 +73,35 @@
 
   function getSchool() {
     const callback = res => {
-      school = res.data;
-      CHANGE_TOKEN(res.token)
+      school = res;
     }
 
     const onError = err => {
       console.log(err);
 
-      // $goto('/app/not-found');
+      $goto('/app/not-found');
 
     }
 
-    GET_SCHOOL_BY_ID(slug.id, token, callback, onError);
+    GET_SCHOOL_BY_ID(slug.id, callback, onError);
   }
 
   function get_school_payment_in_term() {
     const term = JSON.parse(localStorage.getItem('selectedTerm'));
     const callback = res => {
 
-      CHANGE_TOKEN(res.token)
 
       setTimeout(() => {
 
         if (payment_info === null) {
-          payment_info = res.data;
+          payment_info = res;
           init();
           isLoading = false;
           error = false;
         }
 
 
-      }, 2000)
+      }, 100)
     }
 
     const onError = err => {
@@ -111,24 +111,44 @@
         isLoading = false;
         error = 'No data found';
 
-      }, 2000)
+      }, 100)
 
 
     }
 
-    SINGLE_SCHOOL_PAYMENT_IN_A_TERM(slug.id, term.term_id, token, callback, onError);
+    SINGLE_SCHOOL_PAYMENT_IN_A_TERM(slug.id, term.term_id, callback, onError);
   }
 
-  $: if (terms) {
+   $: if (terms.term_id != 'undefined') {
+
+        isLoading = true;
+        payment_info = null;
+        let getTerm = JSON.parse(localStorage.getItem('selectedTerm'));
+        setTimeout(() => {
+            if (getTerm.term_id === terms.term_id) {
+                get_school_payment_in_term()
+            }
+        }, 100)
+
+    }
+
+  $: if (zones.zone_id != 'undefined') {
+
     isLoading = true;
     payment_info = null;
-    get_school_payment_in_term();
+    let getZone = JSON.parse(localStorage.getItem('selectedZone'));
+    setTimeout(() => {
+      if (getZone.zone.zone_id === zones.zone_id) {
+        get_school_payment_in_term()
+      }
+    }, 100)
+
   }
+
 
 
   $: if (payment_info) {
     error = false;
-    console.log('Reactivity', payment_info);
   }
 </script>
 

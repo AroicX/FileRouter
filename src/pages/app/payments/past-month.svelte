@@ -63,7 +63,7 @@
 
         const callback = res => {
 
-            past_month = res.data;
+            past_month = res;
 
             setTimeout(() => {
                 init();
@@ -75,7 +75,7 @@
             console.error(err);
         }
 
-        PAYMENT_ALL_SCHOOLS(token, callback, onError);
+        PAYMENT_ALL_SCHOOLS(callback, onError);
     }
 </script>
 

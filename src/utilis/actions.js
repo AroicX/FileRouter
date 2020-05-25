@@ -7,11 +7,11 @@ import { fetcher } from "./index";
 const BASE_URL = api.BASE_URL;
 
 export function CHANGE_TOKEN(token) {
-  localStorage.removeItem("token");
-  localStorage.token = JSON.stringify({
-    token: token,
-  });
-  STORAGE_TOKEN.set(token);
+  // localStorage.removeItem("token");
+  // localStorage.token = JSON.stringify({
+  //   token: token,
+  // });
+  // STORAGE_TOKEN.set(token);
 }
 export function JWT_EXPIRED(err) {
   if (err.message === "jwt expired") {
@@ -25,6 +25,25 @@ export function JWT_EXPIRED(err) {
     localStorage.removeItem("currentUser");
     $goto("/");
     return false;
+  }
+}
+
+export async function TEST_RUNNUER() {
+  // let test = await fetcher.get("/term");
+  // .then((res) => console.log(res))
+  // .catch((err) => console.log(err));
+
+  try {
+    let test = await fetcher.get("/term");
+    let { data } = test.data;
+    let status = test.data.status;
+
+    console.log(status);
+    console.log(data);
+  } catch (err) {
+    let { error } = err.response.data;
+    console.log(error);
+    console.log(err.response.data);
   }
 }
 
@@ -55,20 +74,14 @@ export async function LOG_USER_IN(email, password, callback, onError) {
   }
 }
 
-export async function TERMS(token, callback, onError) {
+export async function TERMS(callback, onError) {
   try {
-    let term = await fetch(`${BASE_URL}/term`, {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `${token}`,
-      },
-    });
-    term = await term.json();
+    let term = await fetcher.get(`/term`);
+    let { data } = term.data;
+    let status = term.data.status;
 
-    term.status === "success" && callback && callback(term);
-    if (term.status === "error") throw term;
+    status === "success" && callback && callback(data);
+    if (status === "error") throw term;
 
     return term;
   } catch (err) {
@@ -77,20 +90,14 @@ export async function TERMS(token, callback, onError) {
     return false;
   }
 }
-export async function ZONES(token, callback, onError) {
+export async function ZONES(callback, onError) {
   try {
-    let zones = await fetch(`${BASE_URL}/zones`, {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `${token}`,
-      },
-    });
-    zones = await zones.json();
+    let zones = await fetcher.get(`/zones`);
+    let { data } = zones.data;
+    let status = zones.data.status;
 
-    zones.status === "success" && callback && callback(zones);
-    if (zones.status === "error") throw zones;
+    status === "success" && callback && callback(data);
+    if (status === "error") throw zones;
 
     return zones;
   } catch (err) {
@@ -100,23 +107,14 @@ export async function ZONES(token, callback, onError) {
   }
 }
 
-export async function DASHBOARD(term_id, token, callback, onError) {
+export async function DASHBOARD(term_id, callback, onError) {
   try {
-    let dashboard = await fetch(
-      `${BASE_URL}/dashboard/all?term_id=${term_id}`,
-      {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: `${token}`,
-        },
-      }
-    );
-    dashboard = await dashboard.json();
+    let dashboard = await fetcher.get(`/dashboard/all`);
+    let { data } = dashboard.data;
+    let status = dashboard.data.status;
 
-    dashboard.status === "success" && callback && callback(dashboard);
-    if (dashboard.status === "error") throw dashboard;
+    status === "success" && callback && callback(data);
+    if (status === "error") throw dashboard;
 
     return dashboard;
   } catch (err) {
@@ -126,20 +124,14 @@ export async function DASHBOARD(term_id, token, callback, onError) {
   }
 }
 
-export async function GET_ZONAL_DASHBOARD_BY_ID(id, token, callback, onError) {
+export async function GET_ZONAL_DASHBOARD_BY_ID(id, callback, onError) {
   try {
-    let dashboard = await fetch(`${BASE_URL}/zones/${id}/dashboard`, {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `${token}`,
-      },
-    });
-    dashboard = await dashboard.json();
+    let dashboard = await fetcher.get(`/zones/${id}/dashboard`);
+    let { data } = dashboard.data;
+    let status = dashboard.data.status;
 
-    dashboard.status === "success" && callback && callback(dashboard);
-    if (dashboard.status === "error") throw dashboard;
+    status === "success" && callback && callback(data);
+    if (status === "error") throw dashboard;
 
     return dashboard;
   } catch (err) {
@@ -149,21 +141,14 @@ export async function GET_ZONAL_DASHBOARD_BY_ID(id, token, callback, onError) {
   }
 }
 
-export async function GET_SCHOOLS(term_id, token, callback, onError) {
+export async function GET_SCHOOLS(term_id, callback, onError) {
   try {
-    let schools = await fetch(`${BASE_URL}/dashboard/list?term_id=${term_id}`, {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `${token}`,
-      },
-    });
-    schools = await schools.json();
+    let schools = await fetcher.get(`/dashboard/list`);
+    let { data } = schools.data;
+    let status = schools.data.status;
 
-    schools.status === "success" && callback && callback(schools);
-
-    if (schools.status === "error") throw schools;
+    status === "success" && callback && callback(data);
+    if (status === "error") throw schools;
 
     return schools;
   } catch (err) {
@@ -173,20 +158,14 @@ export async function GET_SCHOOLS(term_id, token, callback, onError) {
   }
 }
 
-export async function GET_SCHOOL_BY_ID(id, token, callback, onError) {
+export async function GET_SCHOOL_BY_ID(id, callback, onError) {
   try {
-    let schools = await fetch(`${BASE_URL}/schools/${id}`, {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `${token}`,
-      },
-    });
-    schools = await schools.json();
+    let schools = await fetcher.get(`/schools/${id}`);
+    let { data } = schools.data;
+    let status = schools.data.status;
 
-    schools.status === "success" && callback && callback(schools);
-    if (schools.status === "error") throw schools;
+    status === "success" && callback && callback(data);
+    if (status === "error") throw schools;
 
     return schools;
   } catch (err) {
@@ -198,26 +177,16 @@ export async function GET_SCHOOL_BY_ID(id, token, callback, onError) {
 export async function GET_SCHOOL_FEE_INFORMATION(
   school_id,
   term_id,
-  token,
   callback,
   onError
 ) {
   try {
-    let fees = await fetch(
-      `${BASE_URL}/payment/status/${school_id}/${term_id}`,
-      {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: `${token}`,
-        },
-      }
-    );
-    fees = await fees.json();
+    let fees = await fetcher.get(`/payment/status/${school_id}/`);
+    let { data } = fees.data;
+    let status = fees.data.status;
 
-    fees.status === "success" && callback && callback(fees);
-    if (fees.status === "error") throw fees;
+    status === "success" && callback && callback(data);
+    if (status === "error") throw fees;
 
     return fees;
   } catch (err) {
@@ -227,28 +196,14 @@ export async function GET_SCHOOL_FEE_INFORMATION(
   }
 }
 
-export async function SINGLE_SCHOOL_PAYMENT_DASHBOARD(
-  id,
-  token,
-  callback,
-  onError
-) {
+export async function SINGLE_SCHOOL_PAYMENT_DASHBOARD(id, callback, onError) {
   try {
-    let schools = await fetch(
-      `${BASE_URL}/payment/allschools?school_id=${id}`,
-      {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: `${token}`,
-        },
-      }
-    );
-    schools = await schools.json();
+    let schools = await fetcher.get(`/payment/allschools?school_id=${id}&`);
+    let { data } = schools.data;
+    let status = schools.data.status;
 
-    schools.status === "success" && callback && callback(schools);
-    if (schools.status === "error") throw schools;
+    status === "success" && callback && callback(data);
+    if (status === "error") throw schools;
 
     return schools;
   } catch (err) {
@@ -261,26 +216,16 @@ export async function SINGLE_SCHOOL_PAYMENT_DASHBOARD(
 export async function SINGLE_SCHOOL_PAYMENT_IN_A_TERM(
   school_id,
   term_id,
-  token,
   callback,
   onError
 ) {
   try {
-    let schools = await fetch(
-      `${BASE_URL}/payment/school/${school_id}?term_id=${term_id}`,
-      {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: `${token}`,
-        },
-      }
-    );
-    schools = await schools.json();
+    let schools = await fetcher.get(`/payment/school/${school_id}`);
+    let { data } = schools.data;
+    let status = schools.data.status;
 
-    schools.status === "success" && callback && callback(schools);
-    if (schools.status === "error") throw schools;
+    status === "success" && callback && callback(data);
+    if (status === "error") throw schools;
 
     return schools;
   } catch (err) {
@@ -290,20 +235,14 @@ export async function SINGLE_SCHOOL_PAYMENT_IN_A_TERM(
   }
 }
 
-export async function PAYMENT_ALL_SCHOOLS(token, callback, onError) {
+export async function PAYMENT_ALL_SCHOOLS(callback, onError) {
   try {
-    let schools = await fetch(`${BASE_URL}/payment`, {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `${token}`,
-      },
-    });
-    schools = await schools.json();
+    let schools = await fetcher.get(`payment`);
+    let { data } = schools.data;
+    let status = schools.data.status;
 
-    schools.status === "success" && callback && callback(schools);
-    if (schools.status === "error") throw user;
+    status === "success" && callback && callback(data);
+    if (status === "error") throw user;
 
     return schools;
   } catch (err) {

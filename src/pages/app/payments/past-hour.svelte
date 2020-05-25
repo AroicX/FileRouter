@@ -63,7 +63,7 @@
 
         const callback = res => {
 
-            past_hour = res.data;
+            past_hour = res;
             init();
            
 
@@ -73,7 +73,7 @@
             console.error(err);
         }
 
-        PAYMENT_ALL_SCHOOLS(token, callback, onError);
+        PAYMENT_ALL_SCHOOLS(callback, onError);
     }
 </script>
 

@@ -63,7 +63,7 @@
 
         const callback = res => {
 
-            payments = res.data;
+            payments = res;
             init();
         
 
@@ -73,7 +73,7 @@
             console.error(err);
         }
 
-        PAYMENT_ALL_SCHOOLS(token, callback, onError);
+        PAYMENT_ALL_SCHOOLS(callback, onError);
     }
 </script>
 

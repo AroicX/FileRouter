@@ -4,7 +4,6 @@
   } from "svelte";
   import {
     GET_SCHOOL_BY_ID,
-    CHANGE_TOKEN,
     SINGLE_SCHOOL_PAYMENT_DASHBOARD
 
   } from "../../../../utilis/actions.js";
@@ -15,7 +14,7 @@
     goto,
     url
   } from "@sveltech/routify";
-    import numeral from 'numeral';
+  import numeral from 'numeral';
 
 
   export let slug;
@@ -40,36 +39,38 @@
 
   function getSchool() {
     const callback = res => {
-      school = res.data;
-      CHANGE_TOKEN(res.token)
+      school = res;
     }
 
     const onError = err => {
+      isLoading = false;
+
       console.log(err);
 
       $goto('/app/not-found');
 
     }
 
-    GET_SCHOOL_BY_ID(slug.id, token, callback, onError);
+    GET_SCHOOL_BY_ID(slug.id, callback, onError);
   }
 
   function getDashboard() {
     const callback = res => {
-      payment_dashboard = res.data[0];
-      CHANGE_TOKEN(res.token);
+      payment_dashboard = res[0];;
 
       setTimeout(() => {
         isLoading = false;
-      }, 2000)
+      }, 100)
     }
 
     const onError = err => {
+      isLoading = false;
+
       console.log(err);
 
     }
 
-    SINGLE_SCHOOL_PAYMENT_DASHBOARD(slug.id, token, callback, onError);
+    SINGLE_SCHOOL_PAYMENT_DASHBOARD(slug.id, callback, onError);
   }
 </script>
 

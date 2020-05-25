@@ -3,8 +3,7 @@
         onMount
     } from "svelte";
     import {
-        DASHBOARD,
-        CHANGE_TOKEN
+        DASHBOARD
     } from "../../utilis/actions.js";
     import Loader from "../../components/Loader.svelte";
     import {
@@ -15,7 +14,7 @@
     import numeral from 'numeral'
 
 
-    let dashboard = [];
+    let dashboard = null;
     let isLoading = true;
     let token = null;
     let term = [];
@@ -31,35 +30,35 @@
 
         STORAGE_TOKEN.subscribe(value => token = value);
         SET_TERM.subscribe(value => terms = value);
-        
+        getDashboard();
 
-
-      
     })
 
     function getDashboard() {
-        isLoading = true;
-
         let getTerm = JSON.parse(localStorage.getItem('selectedTerm'));
 
         const callback = res => {
-            dashboard = res.data[0];
-            CHANGE_TOKEN(res.token)
-
-            setTimeout(() => {
-                isLoading = false;
-            }, 1000)
+            if (dashboard === null) {
+                dashboard = res[0];
+                setTimeout(() => {
+                    isLoading = false;
+                }, 100)
+            }
         }
 
         const onError = err => {
             console.error(err);
         }
 
-        DASHBOARD(getTerm.term_id, token, callback, onError);
+        DASHBOARD(getTerm.term_id, callback, onError);
     }
 
     $: if (terms) {
-        getDashboard();
+        isLoading = true;
+        dashboard = null;
+        let getTerm = JSON.parse(localStorage.getItem('selectedTerm'));
+        setTimeout(() => {if (getTerm.term_id === terms.term_id) { getDashboard() }}, 100)
+
     }
 </script>
 
@@ -77,7 +76,7 @@
 
 
 
-{#if isLoading}
+{#if isLoading && dashboard === null}
 <div class="loader">
   <div class="bubble-1"></div>
   <div class="bubble-2"></div>

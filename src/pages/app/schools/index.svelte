@@ -4,11 +4,11 @@
     } from "svelte";
     import {
         STORAGE_TOKEN,
-        SET_TERM
+        SET_TERM,
+        SET_ZONE
     } from "../../../store.js";
     import {
-        GET_SCHOOLS,
-        CHANGE_TOKEN
+        GET_SCHOOLS
     } from "../../../utilis/actions.js"
 
     import Loader from "../../../components/Loader.svelte";
@@ -19,11 +19,13 @@
     let isLoading = true;
     let error = null;
     let terms = [];
+    let zones = [];
 
 
     onMount(() => {
         STORAGE_TOKEN.subscribe(value => token = value);
         SET_TERM.subscribe(value => terms = value);
+        SET_ZONE.subscribe(value => zones = value);
 
     });
 
@@ -34,16 +36,14 @@
         let getTerm = JSON.parse(localStorage.getItem('selectedTerm'));
         const callback = res => {
 
-            CHANGE_TOKEN(res.token)
 
-            setTimeout(() => {
-                if (schools === null) {
-                    schools = res.data;
-                    init();
-                    isLoading = false;
-                    error = false;
-                }
-            }, 2000)
+            if (schools === null) {
+                schools = res;
+                init();
+                isLoading = false;
+                error = false;
+            }
+
 
         }
         const onError = err => {
@@ -53,10 +53,10 @@
                 isLoading = false;
                 error = 'No data found';
 
-            }, 2000)
+            }, 100)
         }
 
-        GET_SCHOOLS(getTerm.term_id, token, callback, onError);
+        GET_SCHOOLS(getTerm.term_id, callback, onError);
     }
 
 
@@ -86,10 +86,29 @@
     }
 
 
-    $: if (terms) {
+    $: if (terms.term_id != 'undefined') {
+
         isLoading = true;
         schools = null;
-        getSchools();
+        let getTerm = JSON.parse(localStorage.getItem('selectedTerm'));
+        setTimeout(() => {
+            if (getTerm.term_id === terms.term_id) {
+                getSchools()
+            }
+        }, 100)
+
+    }
+    $: if (zones.zone_id != 'undefined') {
+
+        isLoading = true;
+        schools = null;
+        let getZone = JSON.parse(localStorage.getItem('selectedZone'));
+        setTimeout(() => {
+            if (getZone.zone.zone_id === zones.zone_id) {
+                getSchools()
+            }
+        }, 100)
+
     }
 
     $: if (schools) {

@@ -3,8 +3,7 @@
         onMount
     } from "svelte";
     import {
-        GET_ZONAL_DASHBOARD_BY_ID,
-        CHANGE_TOKEN
+        GET_ZONAL_DASHBOARD_BY_ID
     } from "../../../../../utilis/actions.js";
     import {
         STORAGE_TOKEN
@@ -34,8 +33,7 @@
 
 
         const callback = res => {
-            dashboard = res.data[0];
-            CHANGE_TOKEN(res.token)
+            dashboard = res[0];
 
             return false;
 
@@ -46,7 +44,7 @@
         }
 
 
-        GET_ZONAL_DASHBOARD_BY_ID(slug.id, token, callback, onError);
+        GET_ZONAL_DASHBOARD_BY_ID(slug.id,  callback, onError);
     }
 </script>
 

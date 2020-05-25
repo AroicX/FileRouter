@@ -4,12 +4,12 @@
   } from "svelte";
   import {
     GET_SCHOOL_BY_ID,
-    CHANGE_TOKEN,
     GET_SCHOOL_FEE_INFORMATION
 
   } from "../../../../../utilis/actions.js";
   import {
-    STORAGE_TOKEN
+    STORAGE_TOKEN,
+    SET_TERM
   } from "../../../../../store.js";
   import {
     goto,
@@ -19,9 +19,10 @@
 
   export let slug;
 
-
+  let isLoading = true;
   let token = null;
   let school = [];
+  let terms = [];
   let fee_info = [];
 
 
@@ -29,6 +30,8 @@
 
   onMount(() => {
     STORAGE_TOKEN.subscribe(value => token = value);
+    SET_TERM.subscribe(value => terms = value);
+
     getSchool();
     get_fee_information();
 
@@ -63,37 +66,55 @@
 
   function getSchool() {
     const callback = res => {
-      school = res.data;
-      CHANGE_TOKEN(res.token)
+      school = res;
     }
 
     const onError = err => {
+      isLoading = false;
       console.log(err);
-
       $goto('/app/not-found');
-
     }
 
-    GET_SCHOOL_BY_ID(slug.id, token, callback, onError);
+    GET_SCHOOL_BY_ID(slug.id, callback, onError);
   }
 
   function get_fee_information() {
 
     const term = JSON.parse(localStorage.getItem('selectedTerm'));
-    // console.log(term_id)
 
     const callback = res => {
-      fee_info = res.data;
-      init();
-      CHANGE_TOKEN(res.token)
+      if (fee_info === null) {
+        fee_info = res;
+        init();
+        setTimeout(() => {
+          isLoading = false;
+        }, 100)
+      }
+
+
+
     }
 
     const onError = err => {
+      isLoading = false;
       console.log(err);
 
     }
 
-    GET_SCHOOL_FEE_INFORMATION(slug.id, term.term_id, token, callback, onError);
+    GET_SCHOOL_FEE_INFORMATION(slug.id, term.term_id, callback, onError);
+  }
+
+
+  $: if (terms) {
+    isLoading = true;
+    fee_info = null;
+    let getTerm = JSON.parse(localStorage.getItem('selectedTerm'));
+    setTimeout(() => {
+      if (getTerm.term_id === terms.term_id) {
+        get_fee_information()
+      }
+    }, 100)
+
   }
 </script>
 
@@ -103,9 +124,16 @@
 </svelte:head>
 
 
+
+{#if isLoading}
+<div class="loader">
+  <div class="bubble-1"></div>
+  <div class="bubble-2"></div>
+</div>
+
+
+{:else}
 <main>
-
-
   <div class="slim-mainpanel">
     <div class="container">
       <div class="slim-pageheader">
@@ -141,18 +169,20 @@
               </tr>
             </thead>
             <tbody>
-              {#each fee_info as fee,i}
-              <tr>
-                <td>{i + 1}</td>
-                <td>{fee.student_id}</td>
-                <td>{fee.name}</td>
-                <td>₦ {numeral(fee.total_fees).format('0,0')}</td>
-                <td>₦ {numeral(fee.total_paid).format('0,0')}</td>
-                <td>₦ {numeral(fee.total_owing).format('0,0')}</td>
-                <td>{fee.created_at}</td>
+           {#if fee_info != null}
+            {#each fee_info as fee,i}
+                      <tr>
+                        <td>{i + 1}</td>
+                        <td>{fee.student_id}</td>
+                        <td>{fee.name}</td>
+                        <td>₦ {numeral(fee.total_fees).format('0,0')}</td>
+                        <td>₦ {numeral(fee.total_paid).format('0,0')}</td>
+                        <td>₦ {numeral(fee.total_owing).format('0,0')}</td>
+                        <td>{fee.created_at}</td>
 
-              </tr>
+                      </tr>
             {/each}
+           {/if}
             </tbody>
           </table>
         </div><!-- table-wrapper -->
@@ -160,7 +190,6 @@
 
     </div><!-- container -->
   </div><!-- slim-mainpanel -->
-
-
-
 </main>
+
+{/if}

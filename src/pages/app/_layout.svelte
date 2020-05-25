@@ -17,7 +17,6 @@
   } from "../../store.js";
   import {
     TERMS,
-    CHANGE_TOKEN,
     ZONES
   } from "../../utilis/actions.js";
 
@@ -34,7 +33,7 @@
   let selectedZone = null;
 
   onMount(() => {
-//initillaztions
+
 
     const ls = JSON.parse(localStorage.getItem("token"));
     const user_type = JSON.parse(localStorage.getItem("currentUser"));
@@ -49,6 +48,7 @@
     getZones();
     loadCheckers();
 
+    SET_ZONE.set(zones);
 
   })
 
@@ -66,30 +66,30 @@
 
   const getTerms = () => {
     const callback = res => {
-      SET_TERM.set(res.data);
-      terms = res.data;
-      CHANGE_TOKEN(res.token);
+      SET_TERM.set(res);
+      terms = res;
+      
     }
 
     const onError = err => {
       console.error(err);
     }
 
-    TERMS(token, callback, onError);
+    TERMS(callback, onError);
 
   }
 
   const getZones = () => {
     const callback = res => {
-      zones = res.data;
-      CHANGE_TOKEN(res.token);
+      zones = res;
+      
     }
 
     const onError = err => {
       console.error(err);
     }
 
-    ZONES(token, callback, onError);
+    ZONES( callback, onError);
   }
 
   function loadCheckers() {
