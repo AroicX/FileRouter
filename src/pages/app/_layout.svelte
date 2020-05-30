@@ -68,7 +68,7 @@
     const callback = res => {
       SET_TERM.set(res);
       terms = res;
-      
+
     }
 
     const onError = err => {
@@ -82,14 +82,14 @@
   const getZones = () => {
     const callback = res => {
       zones = res;
-      
+
     }
 
     const onError = err => {
       console.error(err);
     }
 
-    ZONES( callback, onError);
+    ZONES(callback, onError);
   }
 
   function loadCheckers() {
@@ -331,6 +331,7 @@
           </a>
 
         </li>
+           {#if userType === 'Central User'}
          <li class="nav-item with-sub">
           <a class="nav-link" href={null}>
             <i class="icon ion-ios-location-outline"></i>
@@ -345,6 +346,7 @@
             </ul>
           </div><!-- dropdown-menu -->
         </li>
+        {/if}
         <li class="nav-item ">
           <a class="nav-link" href="/app/schools/">
             <i class="icon ion-ios-filing-outline"></i>

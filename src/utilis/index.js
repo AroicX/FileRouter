@@ -1,8 +1,6 @@
 import axios from "axios";
 import api from "./api";
-import {
-  STORAGE_TOKEN
-} from "../store.js";
+import { STORAGE_TOKEN } from "../store.js";
 
 export const fetcher = axios.create({
   baseURL: api.BASE_URL,
@@ -24,12 +22,12 @@ fetcher.interceptors.request.use(
   function (config) {
     let localToken = JSON.parse(localStorage.token);
     let signedUser = JSON.parse(localStorage.currentUser);
-    let selectedZone = localStorage.selectedZone ?
-      JSON.parse(localStorage.selectedZone) :
-      false;
-    let selectedTerm = localStorage.selectedTerm ?
-      JSON.parse(localStorage.selectedTerm) :
-      false;
+    let selectedZone = localStorage.selectedZone
+      ? JSON.parse(localStorage.selectedZone)
+      : false;
+    let selectedTerm = localStorage.selectedTerm
+      ? JSON.parse(localStorage.selectedTerm)
+      : false;
     let userType = signedUser.user.zone;
 
     config.headers = {
@@ -39,14 +37,29 @@ fetcher.interceptors.request.use(
     config.headers["Content-Type"] = "application/json";
     config.headers.Authorization = `${localToken.token}`;
     // you can also do other modification in config
+    let stringUrl = config.url;
 
     if (userType === "Central User" && selectedZone) {
-      config.url = `${config.url}?term_id=${selectedTerm.term_id}&zone_id=${selectedZone.zone.zone_id}`;
+      if (stringUrl.substr(-1) == "&") {
+        config.url = `${config.url}&term_id=${selectedTerm.term_id}&zone_id=${selectedZone.zone.zone_id}`;
+      } else {
+        config.url = `${config.url}?term_id=${selectedTerm.term_id}&zone_id=${selectedZone.zone.zone_id}`;
+      }
     } else if (userType === "Central User") {
-      config.url = `${config.url}?term_id=${selectedTerm.term_id}`;
-    } else {}
+      if (stringUrl.substr(-1) == "&") {
+        config.url = `${config.url}&term_id=${selectedTerm.term_id}`;
+      } else {
+        config.url = `${config.url}?term_id=${selectedTerm.term_id}`;
+      }
+    } else {
+      if (stringUrl.substr(-1) == "&") {
+        config.url = `${config.url}&term_id=${selectedTerm.term_id}&zone_id=${userType}`;
+      } else {
+        config.url = `${config.url}?term_id=${selectedTerm.term_id}&zone_id=${userType}`;
+      }
+    }
 
-    console.log(`The url to the api is ${config.url}`);
+    // console.log(`The url to the api is ${config.url}`);
     return config;
   },
   function (error) {

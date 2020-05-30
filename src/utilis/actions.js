@@ -6,13 +6,6 @@ import { fetcher } from "./index";
 
 const BASE_URL = api.BASE_URL;
 
-export function CHANGE_TOKEN(token) {
-  // localStorage.removeItem("token");
-  // localStorage.token = JSON.stringify({
-  //   token: token,
-  // });
-  // STORAGE_TOKEN.set(token);
-}
 export function JWT_EXPIRED(err) {
   if (err.message === "jwt expired") {
     localStorage.removeItem("token");
@@ -181,7 +174,7 @@ export async function GET_SCHOOL_FEE_INFORMATION(
   onError
 ) {
   try {
-    let fees = await fetcher.get(`/payment/status/${school_id}/`);
+    let fees = await fetcher.get(`/payment/status?school_id=${school_id}&`);
     let { data } = fees.data;
     let status = fees.data.status;
 
@@ -242,7 +235,7 @@ export async function PAYMENT_ALL_SCHOOLS(callback, onError) {
     let status = schools.data.status;
 
     status === "success" && callback && callback(data);
-    if (status === "error") throw user;
+    if (status === "error") throw schools;
 
     return schools;
   } catch (err) {
