@@ -132,18 +132,7 @@
 
     }
 
-  $: if (zones.zone_id != 'undefined') {
 
-    isLoading = true;
-    payment_info = null;
-    let getZone = JSON.parse(localStorage.getItem('selectedZone'));
-    setTimeout(() => {
-      if (getZone.zone.zone_id === zones.zone_id) {
-        get_school_payment_in_term()
-      }
-    }, 100)
-
-  }
 
 
 
